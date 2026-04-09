@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="x-apple-disable-message-reformatting">
+  <title>Confirmation de commande — BrickStore</title>
+  <!--[if mso]>
+  <noscript><xml><o:OfficeDocumentSettings><o:PixelsPerInch>96</o:PixelsPerInch></o:OfficeDocumentSettings></xml></noscript>
+  <![endif]-->
+  <style>
+    /* ── RESET EMAIL ── */
+    * { box-sizing: border-box; }
+    body, html { margin: 0; padding: 0; width: 100%; }
+    body { background-color: #0d1117; font-family: 'Nunito', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; -webkit-font-smoothing: antialiased; }
+    table { border-collapse: collapse; mso-table-lspace: 0pt; mso-table-rspace: 0pt; }
+    img { border: 0; display: block; height: auto; max-width: 100%; }
+    a { color: #FFD700; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* ── TYPOGRAPHY ── */
+    h1, h2, h3, h4 { margin: 0; padding: 0; }
+
+    /* ── LAYOUT ── */
+    .email-wrapper { background-color: #0d1117; padding: 32px 16px; }
+    .email-container { max-width: 600px; margin: 0 auto; }
+
+    /* ── HEADER ── */
+    .header { background: linear-gradient(135deg, #161b22 0%, #1f2937 100%); border-radius: 16px 16px 0 0; padding: 36px 40px; border-top: 4px solid #FFD700; text-align: center; }
+    .logo-text { font-size: 32px; font-weight: 900; color: #ffffff; letter-spacing: 3px; margin: 0 0 4px; }
+    .logo-text span { color: #FFD700; }
+    .logo-tagline { font-size: 12px; color: rgba(255,255,255,0.4); letter-spacing: 2px; text-transform: uppercase; }
+
+    /* ── HERO SUCCESS ── */
+    .hero-success { background: linear-gradient(135deg, #002d5a 0%, #006CB7 100%); padding: 48px 40px; text-align: center; }
+    .success-icon { width: 72px; height: 72px; background: rgba(0,200,81,0.15); border: 2px solid #00c851; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; margin: 0 auto 20px; }
+    .success-icon svg { width: 36px; height: 36px; }
+    .hero-title { font-size: 28px; font-weight: 900; color: #ffffff; margin: 0 0 8px; letter-spacing: -0.5px; }
+    .hero-subtitle { font-size: 15px; color: rgba(255,255,255,0.7); margin: 0 0 24px; line-height: 1.6; }
+    .order-number { display: inline-block; background: rgba(255,215,0,0.15); border: 1px solid rgba(255,215,0,0.35); color: #FFD700; font-size: 14px; font-weight: 800; padding: 8px 20px; border-radius: 50px; letter-spacing: 1px; }
+
+    /* ── CONTENT ── */
+    .content { background-color: #161b22; padding: 40px; }
+
+    /* ── SECTION TITLE ── */
+    .section-title { font-size: 12px; font-weight: 800; color: rgba(255,255,255,0.35); text-transform: uppercase; letter-spacing: 2px; margin: 0 0 16px; padding-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,0.06); }
+
+    /* ── INFO CARDS ── */
+    .info-grid { display: table; width: 100%; border-collapse: collapse; margin-bottom: 32px; }
+    .info-cell { display: table-cell; width: 50%; vertical-align: top; padding-right: 8px; }
+    .info-cell:last-child { padding-right: 0; padding-left: 8px; }
+    .info-card { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.07); border-radius: 12px; padding: 20px; }
+    .info-card-label { font-size: 10px; font-weight: 800; color: rgba(255,255,255,0.3); text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 6px; }
+    .info-card-value { font-size: 14px; font-weight: 700; color: #e2e8f0; line-height: 1.5; }
+    .info-card-value strong { color: #FFD700; }
+
+    /* ── PRODUITS ── */
+    .product-list { margin-bottom: 24px; }
+    .product-item { display: table; width: 100%; border-bottom: 1px solid rgba(255,255,255,0.05); padding: 16px 0; }
+    .product-item:last-child { border-bottom: none; }
+    .product-img-cell { display: table-cell; width: 64px; vertical-align: middle; padding-right: 16px; }
+    .product-img { width: 64px; height: 64px; background: linear-gradient(135deg, #1a2332, #1f2d45); border-radius: 8px; border: 1px solid rgba(255,255,255,0.08); overflow: hidden; }
+    .product-img img { width: 100%; height: 100%; object-fit: contain; padding: 6px; }
+    .product-info-cell { display: table-cell; vertical-align: middle; }
+    .product-theme-tag { font-size: 10px; font-weight: 800; color: #FFD700; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 3px; }
+    .product-name { font-size: 14px; font-weight: 700; color: #e2e8f0; margin-bottom: 3px; line-height: 1.3; }
+    .product-meta { font-size: 12px; color: rgba(255,255,255,0.35); }
+    .product-price-cell { display: table-cell; vertical-align: middle; text-align: right; width: 80px; }
+    .product-price { font-size: 16px; font-weight: 900; color: #ffffff; white-space: nowrap; }
+
+    /* ── TOTAUX ── */
+    .totals-block { background: rgba(255,215,0,0.04); border: 1px solid rgba(255,215,0,0.12); border-radius: 12px; padding: 20px; margin-bottom: 32px; }
+    .total-row { display: table; width: 100%; padding: 6px 0; }
+    .total-label { display: table-cell; font-size: 13px; color: rgba(255,255,255,0.45); font-weight: 600; }
+    .total-value { display: table-cell; text-align: right; font-size: 13px; color: rgba(255,255,255,0.7); font-weight: 700; }
+    .total-row.free .total-value { color: #00c851; }
+    .total-row.grand { border-top: 1px solid rgba(255,255,255,0.1); margin-top: 8px; padding-top: 12px; }
+    .total-row.grand .total-label { font-size: 15px; font-weight: 800; color: #e2e8f0; }
+    .total-row.grand .total-value { font-size: 20px; font-weight: 900; color: #FFD700; }
+
+    /* ── ÉTAPES EXPÉDITION ── */
+    .steps-block { margin-bottom: 32px; }
+    .step-row { display: table; width: 100%; margin-bottom: 12px; }
+    .step-num-cell { display: table-cell; vertical-align: top; width: 32px; }
+    .step-num { width: 24px; height: 24px; background: #FFD700; color: #0d1117; border-radius: 50%; font-size: 11px; font-weight: 900; text-align: center; line-height: 24px; }
+    .step-content-cell { display: table-cell; vertical-align: top; padding-left: 12px; }
+    .step-title { font-size: 13px; font-weight: 800; color: #e2e8f0; margin-bottom: 2px; }
+    .step-desc { font-size: 12px; color: rgba(255,255,255,0.4); line-height: 1.5; }
+
+    /* ── GARANTIES ICONS ── */
+    .guarantees-grid { display: table; width: 100%; margin-bottom: 32px; }
+    .guarantee-cell { display: table-cell; text-align: center; padding: 16px 8px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); }
+    .guarantee-cell:first-child { border-radius: 10px 0 0 10px; }
+    .guarantee-cell:last-child { border-radius: 0 10px 10px 0; }
+    .guarantee-icon { font-size: 22px; margin-bottom: 6px; }
+    .guarantee-label { font-size: 11px; font-weight: 700; color: rgba(255,255,255,0.5); line-height: 1.4; }
+
+    /* ── CTA BUTTON ── */
+    .cta-block { text-align: center; margin-bottom: 32px; }
+    .cta-btn { display: inline-block; background: #E3000B; color: #ffffff !important; font-size: 15px; font-weight: 800; padding: 14px 36px; border-radius: 50px; text-decoration: none !important; letter-spacing: 0.3px; box-shadow: 0 4px 20px rgba(227,0,11,0.4); }
+    .cta-btn:hover { background: #b80009; text-decoration: none !important; }
+    .cta-secondary { display: inline-block; margin-top: 12px; font-size: 13px; color: rgba(255,255,255,0.4) !important; text-decoration: underline !important; }
+
+    /* ── FOOTER EMAIL ── */
+    .email-footer { background: #0d1117; border-radius: 0 0 16px 16px; padding: 32px 40px; text-align: center; border-top: 1px solid rgba(255,255,255,0.06); }
+    .footer-logo { font-size: 18px; font-weight: 900; color: rgba(255,255,255,0.4); letter-spacing: 2px; margin-bottom: 12px; }
+    .footer-logo span { color: #FFD700; }
+    .footer-links { margin-bottom: 16px; }
+    .footer-links a { font-size: 12px; color: rgba(255,255,255,0.3) !important; margin: 0 8px; text-decoration: none; }
+    .footer-links a:hover { color: #FFD700 !important; }
+    .footer-legal { font-size: 11px; color: rgba(255,255,255,0.2); line-height: 1.6; max-width: 440px; margin: 0 auto 16px; }
+    .footer-disclaimer { font-size: 10px; color: rgba(255,255,255,0.15); }
+    .payment-badges { margin: 16px 0; }
+    .payment-badge { display: inline-block; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 4px; padding: 3px 8px; font-size: 11px; color: rgba(255,255,255,0.3); margin: 2px; }
+
+    /* ── DIVIDER ── */
+    .divider { height: 1px; background: rgba(255,255,255,0.06); margin: 28px 0; }
+
+    /* ── ALERT BAR ── */
+    .alert-bar { background: rgba(0,200,81,0.08); border: 1px solid rgba(0,200,81,0.25); border-radius: 10px; padding: 14px 20px; margin-bottom: 24px; text-align: center; }
+    .alert-bar p { font-size: 13px; font-weight: 700; color: #00c851; margin: 0; }
+
+    /* ── RESPONSIVE ── */
+    @media only screen and (max-width: 480px) {
+      .content { padding: 24px 20px; }
+      .header { padding: 28px 24px; }
+      .hero-success { padding: 36px 24px; }
+      .hero-title { font-size: 22px; }
+      .info-grid, .info-cell, .info-cell:last-child { display: block; width: 100%; padding: 0; margin-bottom: 8px; }
+      .guarantees-grid, .guarantee-cell { display: block; width: 100%; border-radius: 10px; margin-bottom: 6px; }
+      .product-img-cell { width: 52px; }
+      .product-img { width: 52px; height: 52px; }
+    }
+  </style>
+</head>
+<body>
+<div class="email-wrapper">
+<div class="email-container">
+
+  <!-- ══ HEADER ══ -->
+  <div class="header">
+    <div class="logo-text">Brick<span>Store</span></div>
+    <div class="logo-tagline">Boutique LEGO® Premium · France</div>
+  </div>
+
+  <!-- ══ HERO SUCCÈS ══ -->
+  <div class="hero-success">
+    <div class="success-icon">
+      <!-- Checkmark SVG -->
+      <svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="18" cy="18" r="17" stroke="#00c851" stroke-width="2"/>
+        <path d="M10 18L15.5 24L26 13" stroke="#00c851" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+    <h1 class="hero-title">Commande confirmée ! 🎉</h1>
+    <p class="hero-subtitle">
+      Bonjour <strong style="color:#fff;">{{PRENOM}}</strong>, merci pour votre commande.<br>
+      Nous l'avons bien reçue et notre équipe va la préparer rapidement.
+    </p>
+    <div class="order-number">Commande n° {{NUMERO_COMMANDE}}</div>
+  </div>
+
+  <!-- ══ CONTENU PRINCIPAL ══ -->
+  <div class="content">
+
+    <!-- Alerte expédition -->
+    <div class="alert-bar">
+      <p>✅ &nbsp; Votre commande sera <strong>préparée et expédiée sous 2 jours ouvrés</strong></p>
+    </div>
+
+    <!-- Infos commande -->
+    <div class="section-title">Récapitulatif de la commande</div>
+    <div class="info-grid">
+      <div class="info-cell">
+        <div class="info-card">
+          <div class="info-card-label">Date de commande</div>
+          <div class="info-card-value"><strong>{{DATE_COMMANDE}}</strong></div>
+        </div>
+      </div>
+      <div class="info-cell">
+        <div class="info-card">
+          <div class="info-card-label">Mode de paiement</div>
+          <div class="info-card-value"><strong>{{MODE_PAIEMENT}}</strong></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Adresse livraison -->
+    <div class="info-grid" style="margin-bottom:32px;">
+      <div class="info-cell">
+        <div class="info-card">
+          <div class="info-card-label">Adresse de livraison</div>
+          <div class="info-card-value">
+            {{PRENOM}} {{NOM}}<br>
+            {{ADRESSE}}<br>
+            {{CODE_POSTAL}} {{VILLE}}<br>
+            {{PAYS}}
+          </div>
+        </div>
+      </div>
+      <div class="info-cell">
+        <div class="info-card">
+          <div class="info-card-label">Contact</div>
+          <div class="info-card-value">
+            {{EMAIL}}<br>
+            {{TELEPHONE}}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Produits commandés -->
+    <div class="section-title">Vos articles ({{NB_ARTICLES}})</div>
+    <div class="product-list">
+
+      <!-- ── Répéter ce bloc pour chaque produit ── -->
+      {{#each ARTICLES}}
+      <div class="product-item">
+        <div class="product-img-cell">
+          <div class="product-img">
+            <img src="{{this.image}}" alt="{{this.nom}}" width="64" height="64">
+          </div>
+        </div>
+        <div class="product-info-cell">
+          <div class="product-theme-tag">{{this.theme}}</div>
+          <div class="product-name">{{this.nom}}</div>
+          <div class="product-meta">Réf. {{this.reference}} · Qté : {{this.quantite}}</div>
+        </div>
+        <div class="product-price-cell">
+          <div class="product-price">{{this.prix_total}}</div>
+        </div>
+      </div>
+      {{/each}}
+      <!-- ── Fin boucle produits ── -->
+
+    </div>
+
+    <!-- Totaux -->
+    <div class="totals-block">
+      <div class="total-row">
+        <div class="total-label">Sous-total</div>
+        <div class="total-value">{{SOUS_TOTAL}}</div>
+      </div>
+      <div class="total-row {{LIVRAISON_CLASS}}">
+        <div class="total-label">Livraison</div>
+        <div class="total-value">{{LIVRAISON_TEXTE}}</div>
+      </div>
+      <div class="total-row grand">
+        <div class="total-label">Total payé</div>
+        <div class="total-value">{{TOTAL}}</div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- Étapes suivantes -->
+    <div class="section-title">Ce qui se passe ensuite</div>
+    <div class="steps-block">
+      <div class="step-row">
+        <div class="step-num-cell"><div class="step-num">1</div></div>
+        <div class="step-content-cell">
+          <div class="step-title">Préparation de votre commande</div>
+          <div class="step-desc">Notre équipe vérifie, emballe soigneusement et protège votre set LEGO® sous 24 h ouvrées.</div>
+        </div>
+      </div>
+      <div class="step-row">
+        <div class="step-num-cell"><div class="step-num">2</div></div>
+        <div class="step-content-cell">
+          <div class="step-title">Expédition sous 2 jours ouvrés</div>
+          <div class="step-desc">Votre colis est remis au transporteur. Vous recevrez un e-mail avec votre numéro de suivi.</div>
+        </div>
+      </div>
+      <div class="step-row">
+        <div class="step-num-cell"><div class="step-num">3</div></div>
+        <div class="step-content-cell">
+          <div class="step-title">Livraison à votre domicile</div>
+          <div class="step-desc">Le transporteur vous livre. En cas d'absence, un avis de passage vous sera laissé.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- Garanties -->
+    <div class="section-title">Vos garanties BrickStore</div>
+    <div class="guarantees-grid">
+      <div class="guarantee-cell">
+        <div class="guarantee-icon">🛡️</div>
+        <div class="guarantee-label">Paiement<br>100% sécurisé</div>
+      </div>
+      <div class="guarantee-cell">
+        <div class="guarantee-icon">📦</div>
+        <div class="guarantee-label">Emballage<br>renforcé</div>
+      </div>
+      <div class="guarantee-cell">
+        <div class="guarantee-icon">↩️</div>
+        <div class="guarantee-label">Retours<br>30 jours</div>
+      </div>
+      <div class="guarantee-cell">
+        <div class="guarantee-icon">🏅</div>
+        <div class="guarantee-label">Sets LEGO®<br>officiels</div>
+      </div>
+    </div>
+
+    <!-- CTA -->
+    <div class="cta-block">
+      <a href="https://brickstore.fr" class="cta-btn">Retourner sur la boutique</a><br>
+      <a href="https://brickstore.fr/suivi?cmd={{NUMERO_COMMANDE}}" class="cta-secondary">Suivre ma commande →</a>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- Note retour -->
+    <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:10px;padding:16px 20px;">
+      <p style="font-size:13px;color:rgba(255,255,255,0.5);margin:0;line-height:1.7;">
+        💡 <strong style="color:rgba(255,255,255,0.7);">Besoin de retourner un article ?</strong><br>
+        Vous disposez de <strong style="color:rgba(255,255,255,0.7);">30 jours</strong> après réception pour effectuer un retour.
+        En optant pour un <strong style="color:#FFD700;">crédit boutique BrickStore</strong>, vous bénéficiez d'un bonus de <strong style="color:#FFD700;">+5%</strong> sur le montant remboursé.
+        Contactez-nous à <a href="/cdn-cgi/l/email-protection#b7d4d8d9c3d6d4c3f7d5c5ded4dcc4c3d8c5d299d1c5" style="color:#FFD700;"><span class="__cf_email__" data-cfemail="c2a1adacb6a3a1b682a0b0aba1a9b1b6adb0a7eca4b0">[email&#160;protected]</span></a>
+      </p>
+    </div>
+
+  </div><!-- /content -->
+
+  <!-- ══ FOOTER ══ -->
+  <div class="email-footer">
+    <div class="footer-logo">Brick<span>Store</span></div>
+    <div class="footer-links">
+      <a href="https://brickstore.fr">Boutique</a>
+      <a href="https://brickstore.fr/expedition">Expédition</a>
+      <a href="https://brickstore.fr/retours">Retours</a>
+      <a href="/cdn-cgi/l/email-protection#7c1f1312081d1f083c1e0e151f170f08130e19521a0e">Contact</a>
+    </div>
+    <div class="payment-badges">
+      <span class="payment-badge">Visa</span>
+      <span class="payment-badge">Mastercard</span>
+      <span class="payment-badge">CB</span>
+      <span class="payment-badge">Apple Pay</span>
+      <span class="payment-badge">SSL 256-bit</span>
+    </div>
+    <div class="footer-legal">
+      Cet e-mail a été envoyé à <strong>{{EMAIL}}</strong> suite à votre commande sur BrickStore.
+      Si vous n'êtes pas à l'origine de cette commande, contactez-nous immédiatement à
+      <a href="/cdn-cgi/l/email-protection#debdb1b0aabfbdaa9ebcacb7bdb5adaab1acbbf0b8ac"><span class="__cf_email__" data-cfemail="7c1f1312081d1f083c1e0e151f170f08130e19521a0e">[email&#160;protected]</span></a>
+    </div>
+    <div class="footer-disclaimer">
+      © 2026 BrickStore · Boutique LEGO® indépendante · LEG

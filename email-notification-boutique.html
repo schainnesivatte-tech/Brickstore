@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🛍️ Nouvelle commande — BrickStore Admin</title>
+  <style>
+    * { box-sizing: border-box; }
+    body, html { margin: 0; padding: 0; width: 100%; background-color: #0d1117; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
+    .wrapper { background: #0d1117; padding: 24px 16px; }
+    .container { max-width: 600px; margin: 0 auto; }
+
+    /* Header admin */
+    .admin-header { background: #E3000B; padding: 20px 32px; border-radius: 12px 12px 0 0; display: flex; align-items: center; justify-content: space-between; }
+    .admin-title { font-size: 18px; font-weight: 900; color: #fff; margin: 0; }
+    .admin-badge { background: #FFD700; color: #0d1117; font-size: 11px; font-weight: 900; padding: 4px 12px; border-radius: 50px; letter-spacing: 0.5px; }
+
+    /* Alert barre */
+    .new-order-bar { background: linear-gradient(135deg, #FFD700, #e6c200); padding: 16px 32px; text-align: center; }
+    .new-order-bar p { margin: 0; font-size: 15px; font-weight: 900; color: #0d1117; }
+    .new-order-bar span { font-size: 22px; }
+
+    /* Body */
+    .body { background: #161b22; padding: 32px; }
+    .section-label { font-size: 10px; font-weight: 800; color: rgba(255,255,255,0.3); text-transform: uppercase; letter-spacing: 2px; margin: 0 0 12px; padding-bottom: 8px; border-bottom: 1px solid rgba(255,255,255,0.06); }
+
+    /* Stats rapides */
+    .stats-row { display: table; width: 100%; margin-bottom: 28px; }
+    .stat-cell { display: table-cell; text-align: center; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.07); padding: 16px 8px; }
+    .stat-cell:first-child { border-radius: 10px 0 0 10px; }
+    .stat-cell:last-child { border-radius: 0 10px 10px 0; }
+    .stat-val { font-size: 22px; font-weight: 900; color: #FFD700; }
+    .stat-lbl { font-size: 10px; color: rgba(255,255,255,0.35); font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; margin-top: 2px; }
+
+    /* Client info */
+    .info-grid { display: table; width: 100%; margin-bottom: 24px; }
+    .info-cell { display: table-cell; width: 50%; vertical-align: top; padding-right: 8px; }
+    .info-cell:last-child { padding-right: 0; padding-left: 8px; }
+    .info-block { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.07); border-radius: 10px; padding: 16px; }
+    .info-lbl { font-size: 10px; font-weight: 800; color: rgba(255,255,255,0.3); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
+    .info-val { font-size: 13px; color: #e2e8f0; font-weight: 600; line-height: 1.5; }
+
+    /* Produits */
+    .product-row { display: table; width: 100%; padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.05); }
+    .product-row:last-child { border-bottom: none; }
+    .prod-ref { display: table-cell; width: 70px; font-size: 11px; font-weight: 700; color: rgba(255,255,255,0.3); vertical-align: middle; }
+    .prod-name { display: table-cell; font-size: 13px; font-weight: 700; color: #e2e8f0; vertical-align: middle; padding: 0 8px; }
+    .prod-theme { font-size: 10px; color: #FFD700; font-weight: 800; text-transform: uppercase; }
+    .prod-qty { display: table-cell; width: 40px; text-align: center; font-size: 13px; font-weight: 800; color: rgba(255,255,255,0.5); vertical-align: middle; }
+    .prod-price { display: table-cell; width: 80px; text-align: right; font-size: 14px; font-weight: 900; color: #fff; vertical-align: middle; }
+
+    /* Totaux */
+    .total-block { background: rgba(255,215,0,0.06); border: 1px solid rgba(255,215,0,0.15); border-radius: 10px; padding: 16px; margin: 20px 0; }
+    .total-line { display: table; width: 100%; padding: 4px 0; }
+    .tl-label { display: table-cell; font-size: 13px; color: rgba(255,255,255,0.45); }
+    .tl-value { display: table-cell; text-align: right; font-size: 13px; color: rgba(255,255,255,0.7); font-weight: 700; }
+    .total-line.grand .tl-label { font-size: 15px; font-weight: 800; color: #fff; }
+    .total-line.grand .tl-value { font-size: 18px; font-weight: 900; color: #FFD700; }
+
+    /* Actions */
+    .actions-block { display: table; width: 100%; margin-top: 24px; }
+    .action-cell { display: table-cell; padding-right: 8px; }
+    .action-cell:last-child { padding-right: 0; padding-left: 8px; }
+    .action-btn { display: block; text-align: center; padding: 12px 16px; border-radius: 8px; font-size: 13px; font-weight: 800; text-decoration: none !important; }
+    .action-primary { background: #E3000B; color: #fff !important; }
+    .action-secondary { background: rgba(255,255,255,0.06); color: rgba(255,255,255,0.7) !important; border: 1px solid rgba(255,255,255,0.12); }
+
+    /* Footer */
+    .footer { background: #0d1117; border-radius: 0 0 12px 12px; padding: 20px 32px; text-align: center; border-top: 1px solid rgba(255,255,255,0.06); }
+    .footer p { font-size: 11px; color: rgba(255,255,255,0.2); margin: 0; }
+    .footer a { color: rgba(255,255,255,0.3) !important; }
+
+    @media only screen and (max-width: 480px) {
+      .body { padding: 20px 16px; }
+      .info-grid, .info-cell, .info-cell:last-child { display: block; width: 100%; padding: 0; margin-bottom: 8px; }
+      .stats-row, .stat-cell { display: block; width: 100%; margin-bottom: 6px; border-radius: 10px !important; }
+      .actions-block, .action-cell { display: block; width: 100%; padding: 0; margin-bottom: 8px; }
+    }
+  </style>
+</head>
+<body>
+<div class="wrapper">
+<div class="container">
+
+  <!-- Header admin -->
+  <div class="admin-header">
+    <h1 class="admin-title">BrickStore — Administration</h1>
+    <span class="admin-badge">NOUVELLE COMMANDE</span>
+  </div>
+
+  <!-- Alerte jaune -->
+  <div class="new-order-bar">
+    <p><span>🛍️</span> &nbsp; Nouvelle commande reçue — {{DATE_COMMANDE}} à {{HEURE_COMMANDE}}</p>
+  </div>
+
+  <div class="body">
+
+    <!-- Stats rapides -->
+    <div class="stats-row">
+      <div class="stat-cell">
+        <div class="stat-val">{{NUMERO_COMMANDE}}</div>
+        <div class="stat-lbl">N° commande</div>
+      </div>
+      <div class="stat-cell">
+        <div class="stat-val">{{NB_ARTICLES}}</div>
+        <div class="stat-lbl">Article(s)</div>
+      </div>
+      <div class="stat-cell">
+        <div class="stat-val">{{TOTAL}}</div>
+        <div class="stat-lbl">Montant total</div>
+      </div>
+      <div class="stat-cell">
+        <div class="stat-val">{{MODE_PAIEMENT}}</div>
+        <div class="stat-lbl">Paiement</div>
+      </div>
+    </div>
+
+    <!-- Infos client -->
+    <div class="section-label">Informations client</div>
+    <div class="info-grid" style="margin-bottom:24px;">
+      <div class="info-cell">
+        <div class="info-block">
+          <div class="info-lbl">Client</div>
+          <div class="info-val">
+            <strong style="color:#FFD700;">{{PRENOM}} {{NOM}}</strong><br>
+            {{EMAIL}}<br>
+            {{TELEPHONE}}
+          </div>
+        </div>
+      </div>
+      <div class="info-cell">
+        <div class="info-block">
+          <div class="info-lbl">Adresse de livraison</div>
+          <div class="info-val">
+            {{ADRESSE}}<br>
+            {{CODE_POSTAL}} {{VILLE}}<br>
+            {{PAYS}}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Articles commandés -->
+    <div class="section-label">Articles commandés ({{NB_ARTICLES}})</div>
+    <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:10px;padding:8px 16px;margin-bottom:8px;">
+
+      <!-- Header colonne -->
+      <div style="display:table;width:100%;padding:6px 0;border-bottom:1px solid rgba(255,255,255,0.08);">
+        <div style="display:table-cell;width:70px;font-size:10px;color:rgba(255,255,255,0.3);font-weight:800;text-transform:uppercase;">Réf.</div>
+        <div style="display:table-cell;font-size:10px;color:rgba(255,255,255,0.3);font-weight:800;text-transform:uppercase;padding:0 8px;">Produit</div>
+        <div style="display:table-cell;width:40px;text-align:center;font-size:10px;color:rgba(255,255,255,0.3);font-weight:800;text-transform:uppercase;">Qté</div>
+        <div style="display:table-cell;width:80px;text-align:right;font-size:10px;color:rgba(255,255,255,0.3);font-weight:800;text-transform:uppercase;">Prix</div>
+      </div>
+
+      <!-- ── Répéter pour chaque article ── -->
+      {{#each ARTICLES}}
+      <div class="product-row">
+        <div class="prod-ref">{{this.reference}}</div>
+        <div class="prod-name">
+          <div class="prod-theme">{{this.theme}}</div>
+          {{this.nom}}
+        </div>
+        <div class="prod-qty">×{{this.quantite}}</div>
+        <div class="prod-price">{{this.prix_total}}</div>
+      </div>
+      {{/each}}
+      <!-- ── Fin boucle ── -->
+
+    </div>
+
+    <!-- Totaux -->
+    <div class="total-block">
+      <div class="total-line">
+        <div class="tl-label">Sous-total</div>
+        <div class="tl-value">{{SOUS_TOTAL}}</div>
+      </div>
+      <div class="total-line">
+        <div class="tl-label">Livraison</div>
+        <div class="tl-value" style="color:{{LIVRAISON_COLOR}};">{{LIVRAISON_TEXTE}}</div>
+      </div>
+      <div class="total-line" style="border-top:1px solid rgba(255,255,255,0.08);margin-top:6px;padding-top:10px;">
+        <div class="tl-label" style="font-size:15px;font-weight:800;color:#fff;">TOTAL ENCAISSÉ</div>
+        <div class="tl-value" style="font-size:18px;font-weight:900;color:#FFD700;">{{TOTAL}}</div>
+      </div>
+    </div>
+
+    <!-- Actions admin -->
+    <div class="section-label">Actions rapides</div>
+    <div class="actions-block">
+      <div class="action-cell">
+        <a href="https://dashboard.stripe.com/payments/{{STRIPE_PAYMENT_ID}}" class="action-btn action-primary">
+          💳 Voir le paiement Stripe
+        </a>
+      </div>
+      <div class="action-cell">
+        <a href="/cdn-cgi/l/email-protection#9ae1e1dfd7dbd3d6e7e7a5e9eff8f0fff9eea7ccf5eee8ffbaf9f5f7f7fbf4feffbad8e8f3f9f1c9eef5e8ffbae1e1d4cfd7dfc8d5c5d9d5d7d7dbd4dedfe7e7" class="action-btn action-secondary">
+          ✉️ Contacter le client
+        </a>
+      </div>
+    </div>
+
+    <!-- Note interne -->
+    <div style="margin-top:20px;background:rgba(255,215,0,0.05);border:1px solid rgba(255,215,0,0.15);border-radius:10px;padding:14px 18px;">
+      <p style="font-size:12px;color:rgba(255,255,255,0.4);margin:0;line-height:1.6;">
+        ⚠️ <strong style="color:rgba(255,255,255,0.6);">Rappel :</strong>
+        Cette commande doit être <strong style="color:#FFD700;">préparée et expédiée sous 2 jours ouvrés</strong>.
+        N'oubliez pas d'envoyer l'e-mail de confirmation d'expédition avec le numéro de suivi une fois le colis remis au transporteur.
+      </p>
+    </div>
+
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <p>E-mail interne BrickStore · Ne pas transférer · <a href="https://brickst

@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Votre commande est expédiée — BrickStore</title>
+  <style>
+    * { box-sizing: border-box; }
+    body, html { margin: 0; padding: 0; width: 100%; background-color: #0d1117; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+    .wrapper { background: #0d1117; padding: 32px 16px; }
+    .container { max-width: 600px; margin: 0 auto; }
+    a { color: #FFD700; text-decoration: none; }
+
+    .header { background: linear-gradient(135deg, #161b22, #1f2937); border-radius: 16px 16px 0 0; padding: 32px 40px; border-top: 4px solid #FFD700; text-align: center; }
+    .logo-text { font-size: 28px; font-weight: 900; color: #fff; letter-spacing: 3px; }
+    .logo-text span { color: #FFD700; }
+
+    /* Hero expédition */
+    .hero-ship { background: linear-gradient(135deg, #004f88, #006CB7); padding: 48px 40px; text-align: center; }
+    .ship-icon-wrap { width: 80px; height: 80px; background: rgba(255,255,255,0.1); border: 2px solid rgba(255,255,255,0.2); border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; margin: 0 auto 20px; font-size: 36px; }
+    .hero-title { font-size: 26px; font-weight: 900; color: #fff; margin: 0 0 8px; }
+    .hero-sub { font-size: 14px; color: rgba(255,255,255,0.7); margin: 0 0 28px; line-height: 1.6; }
+
+    /* Numéro de suivi */
+    .tracking-box { background: rgba(255,255,255,0.1); border: 2px solid rgba(255,255,255,0.2); border-radius: 14px; padding: 24px; margin: 0 auto; max-width: 420px; }
+    .tracking-label { font-size: 11px; font-weight: 800; color: rgba(255,255,255,0.5); text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 8px; }
+    .tracking-number { font-size: 22px; font-weight: 900; color: #FFD700; letter-spacing: 2px; margin-bottom: 16px; font-family: 'Courier New', monospace; }
+    .tracking-btn { display: inline-block; background: #FFD700; color: #0d1117 !important; font-size: 14px; font-weight: 900; padding: 12px 28px; border-radius: 50px; text-decoration: none !important; }
+
+    /* Corps */
+    .body { background: #161b22; padding: 36px 40px; }
+    .section-title { font-size: 11px; font-weight: 800; color: rgba(255,255,255,0.3); text-transform: uppercase; letter-spacing: 2px; margin: 0 0 16px; padding-bottom: 10px; border-bottom: 1px solid rgba(255,255,255,0.06); }
+
+    /* Timeline livraison */
+    .timeline { margin-bottom: 28px; }
+    .tl-step { display: table; width: 100%; margin-bottom: 8px; }
+    .tl-icon { display: table-cell; width: 40px; vertical-align: top; }
+    .tl-dot { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; border: 2px solid; }
+    .tl-dot.done { background: rgba(0,200,81,0.15); border-color: #00c851; }
+    .tl-dot.active { background: rgba(255,215,0,0.15); border-color: #FFD700; }
+    .tl-dot.pending { background: rgba(255,255,255,0.04); border-color: rgba(255,255,255,0.1); }
+    .tl-content { display: table-cell; vertical-align: top; padding-left: 16px; padding-bottom: 16px; border-left: 2px solid rgba(255,255,255,0.06); padding-top: 4px; }
+    .tl-title { font-size: 14px; font-weight: 800; color: #e2e8f0; margin-bottom: 2px; }
+    .tl-title.done { color: #00c851; }
+    .tl-title.active { color: #FFD700; }
+    .tl-desc { font-size: 12px; color: rgba(255,255,255,0.4); line-height: 1.5; }
+    .tl-date { font-size: 11px; color: rgba(255,255,255,0.3); font-weight: 700; margin-top: 2px; }
+
+    /* Articles récap */
+    .product-mini { display: table; width: 100%; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.05); }
+    .pm-img { display: table-cell; width: 48px; vertical-align: middle; }
+    .pm-img img { width: 48px; height: 48px; object-fit: contain; background: rgba(255,255,255,0.04); border-radius: 6px; padding: 4px; }
+    .pm-name { display: table-cell; vertical-align: middle; padding-left: 12px; font-size: 12px; font-weight: 700; color: rgba(255,255,255,0.7); }
+    .pm-qty { display: table-cell; width: 30px; text-align: right; font-size: 12px; color: rgba(255,255,255,0.35); vertical-align: middle; }
+
+    /* CTA */
+    .cta-center { text-align: center; margin: 24px 0; }
+    .btn-main { display: inline-block; background: #E3000B; color: #fff !important; font-size: 14px; font-weight: 800; padding: 13px 32px; border-radius: 50px; text-decoration: none !important; }
+    .divider { height: 1px; background: rgba(255,255,255,0.06); margin: 24px 0; }
+
+    /* Footer */
+    .footer { background: #0d1117; border-radius: 0 0 16px 16px; padding: 28px 40px; text-align: center; border-top: 1px solid rgba(255,255,255,0.06); }
+    .footer-logo { font-size: 16px; font-weight: 900; color: rgba(255,255,255,0.35); letter-spacing: 2px; margin-bottom: 10px; }
+    .footer-logo span { color: #FFD700; }
+    .footer-links a { font-size: 11px; color: rgba(255,255,255,0.25) !important; margin: 0 6px; }
+    .footer-legal { font-size: 10px; color: rgba(255,255,255,0.15); margin-top: 12px; line-height: 1.6; }
+
+    @media only screen and (max-width: 480px) {
+      .body, .header, .hero-ship { padding-left: 20px; padding-right: 20px; }
+      .tracking-number { font-size: 16px; }
+    }
+  </style>
+</head>
+<body>
+<div class="wrapper">
+<div class="container">
+
+  <!-- Header -->
+  <div class="header">
+    <div class="logo-text">Brick<span>Store</span></div>
+  </div>
+
+  <!-- Hero expédition -->
+  <div class="hero-ship">
+    <div class="ship-icon-wrap">🚚</div>
+    <h1 class="hero-title">Votre commande est en route !</h1>
+    <p class="hero-sub">
+      Bonjour <strong style="color:#fff;">{{PRENOM}}</strong>,<br>
+      votre commande <strong style="color:#FFD700;">n° {{NUMERO_COMMANDE}}</strong> vient d'être expédiée.
+    </p>
+
+    <!-- Numéro de suivi -->
+    <div class="tracking-box">
+      <div class="tracking-label">Votre numéro de suivi</div>
+      <div class="tracking-number">{{NUMERO_SUIVI}}</div>
+      <a href="{{LIEN_SUIVI}}" class="tracking-btn">📦 Suivre mon colis →</a>
+    </div>
+  </div>
+
+  <div class="body">
+
+    <!-- Timeline -->
+    <div class="section-title">Suivi de votre commande</div>
+    <div class="timeline">
+
+      <div class="tl-step">
+        <div class="tl-icon"><div class="tl-dot done">✓</div></div>
+        <div class="tl-content">
+          <div class="tl-title done">Commande confirmée</div>
+          <div class="tl-date">{{DATE_COMMANDE}}</div>
+          <div class="tl-desc">Votre paiement a été validé avec succès.</div>
+        </div>
+      </div>
+
+      <div class="tl-step">
+        <div class="tl-icon"><div class="tl-dot done">✓</div></div>
+        <div class="tl-content">
+          <div class="tl-title done">Commande préparée</div>
+          <div class="tl-date">{{DATE_PREPARATION}}</div>
+          <div class="tl-desc">Votre set LEGO® a été vérifié, emballé et protégé avec soin.</div>
+        </div>
+      </div>
+
+      <div class="tl-step">
+        <div class="tl-icon"><div class="tl-dot active">🚚</div></div>
+        <div class="tl-content">
+          <div class="tl-title active">En cours de livraison</div>
+          <div class="tl-date">Aujourd'hui — {{DATE_EXPEDITION}}</div>
+          <div class="tl-desc">Votre colis est pris en charge par <strong style="color:rgba(255,255,255,0.7);">{{TRANSPORTEUR}}</strong>. Livraison estimée : <strong style="color:#FFD700;">{{DATE_LIVRAISON_ESTIMEE}}</strong></div>
+        </div>
+      </div>
+
+      <div class="tl-step">
+        <div class="tl-icon"><div class="tl-dot pending">🏠</div></div>
+        <div class="tl-content" style="border-left-color:transparent;">
+          <div class="tl-title" style="color:rgba(255,255,255,0.4);">Livré à votre domicile</div>
+          <div class="tl-desc" style="color:rgba(255,255,255,0.25);">En attente de livraison. En cas d'absence, un avis de passage sera déposé.</div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- Articles expédiés -->
+    <div class="section-title">Articles expédiés ({{NB_ARTICLES}})</div>
+    <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:10px;padding:8px 16px;margin-bottom:24px;">
+      {{#each ARTICLES}}
+      <div class="product-mini">
+        <div class="pm-img"><img src="{{this.image}}" alt="{{this.nom}}" width="48" height="48" onerror="this.style.display='none'"></div>
+        <div class="pm-name">{{this.nom}}</div>
+        <div class="pm-qty">×{{this.quantite}}</div>
+      </div>
+      {{/each}}
+    </div>
+
+    <!-- Info livraison -->
+    <div style="background:rgba(255,215,0,0.05);border:1px solid rgba(255,215,0,0.15);border-radius:10px;padding:16px 20px;margin-bottom:24px;">
+      <p style="font-size:13px;color:rgba(255,255,255,0.55);margin:0;line-height:1.7;">
+        📍 <strong style="color:rgba(255,255,255,0.7);">Adresse de livraison :</strong><br>
+        {{PRENOM}} {{NOM}} — {{ADRESSE}}, {{CODE_POSTAL}} {{VILLE}}, {{PAYS}}
+      </p>
+    </div>
+
+    <!-- CTA suivi -->
+    <div class="cta-center">
+      <a href="{{LIEN_SUIVI}}" class="btn-main">Suivre mon colis en temps réel →</a>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- Note retour -->
+    <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:10px;padding:16px 20px;">
+      <p style="font-size:12px;color:rgba(255,255,255,0.4);margin:0;line-height:1.7;">
+        ↩️ <strong style="color:rgba(255,255,255,0.6);">Politique de retour :</strong>
+        Vous disposez de <strong style="color:rgba(255,255,255,0.7);">30 jours</strong> après réception pour retourner un article dans son emballage d'origine.
+        En optant pour un crédit boutique, bénéficiez d'un <strong style="color:#FFD700;">bonus de +5%</strong> sur le remboursement.
+        Contactez-nous : <a href="/cdn-cgi/l/email-protection#c8aba7a6bca9abbc88aabaa1aba3bbbca7baade6aeba"><span class="__cf_email__" data-cfemail="debdb1b0aabfbdaa9ebcacb7bdb5adaab1acbbf0b8ac">[email&#160;protected]</span></a>
+      </p>
+    </div>
+
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <div class="footer-logo">Brick<span>Store</span></div>
+    <div class="footer-links">
+      <a href="https://brickstore.fr">Boutique</a>
+      <a href="https://brickstore.fr/retours">Retours</a>
+      <a href="/cdn-cgi/l/email-protection#f0939f9e84919384b0928299939b83849f8295de9682">Contact</a>
+    </div>
+    <div class="footer-legal">
+      E-mail e

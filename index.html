@@ -1,0 +1,2574 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BrickStore 2026 — Boutique LEGO® Officielle</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+/* ══ TOKENS ══ */
+:root {
+  --red:        #E3000B;
+  --red-dark:   #b80009;
+  --yellow:     #FFD700;
+  --yellow-dark:#e6c200;
+  --blue:       #006DB7;
+  --blue-dark:  #004f88;
+  --blue-light: #e8f4fd;
+  --dark:       #0d1117;
+  --dark2:      #161b22;
+  --dark3:      #1f2937;
+  --mid:        #243447;
+  --light:      #f0f6ff;
+  --gray:       #64748b;
+  --border:     #2d3748;
+  --success:    #00c851;
+  --radius:     14px;
+  --radius-lg:  22px;
+  --shadow:     0 4px 24px rgba(0,0,0,0.35);
+  --shadow-lg:  0 12px 48px rgba(0,0,0,0.55);
+  --trans:      all 0.22s cubic-bezier(0.4,0,0.2,1);
+}
+
+/* ══ RESET ══ */
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Nunito', sans-serif;
+  background: var(--dark);
+  color: #e2e8f0;
+  overflow-x: hidden;
+  cursor: default;
+}
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--dark); }
+::-webkit-scrollbar-thumb { background: var(--yellow); border-radius: 3px; }
+
+/* ══ BRIQUE 3D CSS ══ */
+.brick-3d {
+  display: inline-block;
+  position: relative;
+  width: var(--bw, 56px);
+  height: var(--bh, 24px);
+  background: var(--bc, #E3000B);
+  border-radius: 3px 3px 2px 2px;
+  box-shadow:
+    inset 0 2px 0 rgba(255,255,255,0.22),
+    inset 0 -2px 0 rgba(0,0,0,0.25),
+    4px 6px 0 rgba(0,0,0,0.35),
+    2px 3px 0 rgba(0,0,0,0.2);
+  transform: translateZ(0);
+}
+.brick-3d::before {
+  content: '';
+  position: absolute;
+  top: -9px; left: 50%;
+  transform: translateX(-50%);
+  width: 70%; height: 9px;
+  background: var(--bc, #E3000B);
+  border-radius: 4px 4px 0 0;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.25),
+    3px 0 0 rgba(0,0,0,0.25);
+  filter: brightness(1.08);
+}
+.brick-3d::after {
+  content: '';
+  position: absolute;
+  right: -4px; top: 3px;
+  width: 4px;
+  height: calc(100% - 3px);
+  background: rgba(0,0,0,0.28);
+  border-radius: 0 2px 2px 0;
+}
+/* Variantes couleur briques */
+.brick-yellow { --bc: #FFD700; }
+.brick-blue   { --bc: #006DB7; }
+.brick-green  { --bc: #00A550; }
+.brick-orange { --bc: #FF6B00; }
+.brick-white  { --bc: #f8f9fa; }
+.brick-dark   { --bc: #1f2937; }
+
+/* ══ MEGA BRIQUE HERO ══ */
+.hero-brick-scene {
+  position: relative;
+  width: 320px; height: 260px;
+  perspective: 900px;
+  flex-shrink: 0;
+}
+.brick-group {
+  position: absolute;
+  transform-style: preserve-3d;
+  animation: brickFloat 5s ease-in-out infinite;
+}
+.brick-group:nth-child(2) { animation-delay: -1.5s; }
+.brick-group:nth-child(3) { animation-delay: -3s; }
+@keyframes brickFloat {
+  0%,100% { transform: translateY(0) rotateX(0deg); }
+  50%      { transform: translateY(-10px) rotateX(3deg); }
+}
+
+/* Brique 3D SVG inline pour hero */
+.svg-brick { filter: drop-shadow(4px 6px 8px rgba(0,0,0,0.5)); }
+
+/* ══ TOPBAR ══ */
+.topbar {
+  background: var(--dark2);
+  border-bottom: 1px solid rgba(255,215,0,0.15);
+  padding: 0.4rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.75rem;
+  color: rgba(255,255,255,0.55);
+}
+.topbar-left { display: flex; gap: 1.5rem; align-items: center; }
+.topbar-left span { display: flex; align-items: center; gap: 0.35rem; }
+.topbar .highlight { color: var(--yellow); font-weight: 800; }
+.topbar-right { display: flex; gap: 1.2rem; }
+.topbar a {
+  color: rgba(255,255,255,0.45); text-decoration: none;
+  font-size: 0.75rem; transition: color 0.2s;
+}
+.topbar a:hover { color: var(--yellow); }
+
+/* ══ HEADER ══ */
+header {
+  background: var(--dark2);
+  border-bottom: 3px solid var(--yellow);
+  position: sticky; top: 0; z-index: 1000;
+  box-shadow: 0 4px 32px rgba(0,0,0,0.6);
+}
+.header-main {
+  display: flex; align-items: center;
+  padding: 0.85rem 2rem; gap: 1.5rem;
+  max-width: 1600px; margin: 0 auto;
+}
+
+/* LOGO */
+.logo {
+  display: flex; align-items: center; gap: 0.8rem;
+  text-decoration: none; cursor: pointer; flex-shrink: 0;
+}
+.logo-brick-wrap {
+  position: relative;
+  width: 46px; height: 38px;
+}
+/* Petite brique CSS inline dans logo */
+.logo-brick-body {
+  position: absolute; bottom: 0; left: 0;
+  width: 46px; height: 22px;
+  background: var(--red);
+  border-radius: 3px;
+  box-shadow:
+    inset 0 2px 0 rgba(255,255,255,0.2),
+    3px 4px 0 rgba(0,0,0,0.4);
+}
+.logo-brick-stud {
+  position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+  width: 28px; height: 12px;
+  background: var(--red);
+  border-radius: 3px 3px 0 0;
+  filter: brightness(1.12);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.25);
+}
+.logo-brick-shadow {
+  position: absolute; bottom: 0; right: -3px;
+  width: 3px; height: 19px;
+  background: rgba(0,0,0,0.35);
+  border-radius: 0 1px 1px 0;
+}
+.logo-text {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.9rem; letter-spacing: 2px;
+  color: #fff; line-height: 1;
+}
+.logo-text span { color: var(--yellow); }
+.logo-year {
+  font-size: 0.65rem; font-weight: 800;
+  color: rgba(255,215,0,0.6); letter-spacing: 1px;
+  display: block; margin-top: -2px;
+}
+.logo:hover .logo-brick-body { background: #c0000a; }
+
+/* ══ SEARCH ══ */
+.search-wrap { flex: 1; max-width: 560px; }
+.search-container {
+  display: flex; align-items: center;
+  background: var(--dark3);
+  border: 2px solid var(--border);
+  border-radius: 50px; overflow: hidden;
+  transition: var(--trans);
+}
+.search-container:focus-within {
+  border-color: var(--yellow);
+  box-shadow: 0 0 0 3px rgba(255,215,0,0.15);
+}
+.search-icon-btn {
+  background: none; border: none;
+  padding: 0.65rem 1rem 0.65rem 1.2rem;
+  color: var(--gray); cursor: pointer;
+  display: flex; align-items: center;
+  transition: color 0.2s;
+}
+.search-container:focus-within .search-icon-btn { color: var(--yellow); }
+.search-input {
+  flex: 1; border: none; background: transparent;
+  padding: 0.65rem 0.5rem; font-size: 0.9rem;
+  font-family: 'Nunito', sans-serif; color: #e2e8f0; outline: none;
+}
+.search-input::placeholder { color: #475569; }
+.search-clear {
+  background: none; border: none; padding: 0.65rem 0.8rem;
+  color: var(--gray); cursor: pointer; font-size: 0.85rem;
+  display: none; align-items: center; transition: color 0.2s;
+}
+.search-clear:hover { color: var(--red); }
+.search-clear.visible { display: flex; }
+.search-submit {
+  background: var(--yellow); color: var(--dark);
+  border: none; padding: 0.65rem 1.2rem;
+  cursor: pointer; font-size: 0.85rem; font-weight: 800;
+  display: flex; align-items: center; gap: 0.4rem;
+  transition: background 0.2s; white-space: nowrap;
+  font-family: 'Nunito', sans-serif;
+}
+.search-submit:hover { background: var(--yellow-dark); }
+
+/* ══ HEADER ACTIONS ══ */
+.header-actions { display: flex; gap: 0.4rem; align-items: center; flex-shrink: 0; }
+.action-btn {
+  display: flex; flex-direction: column; align-items: center;
+  justify-content: center; background: none; border: none;
+  cursor: pointer; padding: 0.5rem 0.8rem;
+  border-radius: var(--radius); color: rgba(255,255,255,0.7);
+  transition: var(--trans); position: relative; min-width: 58px;
+  text-decoration: none;
+}
+.action-btn:hover { background: rgba(255,215,0,0.1); color: var(--yellow); }
+.action-btn i { font-size: 1.25rem; margin-bottom: 0.1rem; }
+.action-btn > span { font-size: 0.68rem; font-weight: 800; letter-spacing: 0.3px; }
+.action-badge {
+  position: absolute; top: 4px; right: 8px;
+  background: var(--red); color: #fff;
+  border-radius: 50%; width: 17px; height: 17px;
+  font-size: 0.6rem; font-weight: 800;
+  display: flex; align-items: center; justify-content: center;
+  border: 2px solid var(--dark2);
+  transform: scale(0);
+  transition: transform 0.2s cubic-bezier(0.34,1.56,0.64,1);
+}
+.action-badge.show { transform: scale(1); }
+.btn-cart {
+  background: var(--red); color: #fff;
+  border: none; border-radius: 50px;
+  padding: 0.6rem 1.3rem;
+  flex-direction: row; gap: 0.5rem; min-width: auto;
+  box-shadow: 0 4px 16px rgba(227,0,11,0.4);
+}
+.btn-cart:hover { background: var(--red-dark); color: #fff; box-shadow: 0 6px 24px rgba(227,0,11,0.55); }
+.btn-cart i { font-size: 0.95rem; margin-bottom: 0; }
+.btn-cart > span { font-size: 0.85rem; font-weight: 800; }
+.btn-cart .action-badge {
+  position: relative; top: auto; right: auto;
+  background: var(--yellow); color: var(--dark);
+  border-color: transparent; transform: scale(1);
+}
+
+/* ══ NAV ══ */
+nav { background: var(--dark3); border-top: 1px solid rgba(255,255,255,0.05); }
+.nav-inner {
+  display: flex; overflow-x: auto;
+  max-width: 1600px; margin: 0 auto;
+  padding: 0 2rem; scrollbar-width: none;
+}
+.nav-inner::-webkit-scrollbar { display: none; }
+.nav-link {
+  color: rgba(255,255,255,0.55); text-decoration: none;
+  padding: 0.65rem 1rem; font-size: 0.8rem; font-weight: 800;
+  white-space: nowrap; transition: var(--trans);
+  border-bottom: 3px solid transparent;
+  cursor: pointer; display: flex; align-items: center; gap: 0.4rem;
+  background: none; border-left: none; border-right: none; border-top: none;
+  font-family: 'Nunito', sans-serif; letter-spacing: 0.3px;
+}
+.nav-link:hover { color: var(--yellow); border-bottom-color: rgba(255,215,0,0.4); }
+.nav-link.active { color: var(--yellow); border-bottom-color: var(--yellow); }
+
+/* ══ HERO ══ */
+.hero {
+  background: var(--dark);
+  position: relative; overflow: hidden;
+  padding: 4rem 2rem 5rem;
+}
+/* Grille de points LEGO */
+.hero::before {
+  content: '';
+  position: absolute; inset: 0;
+  background-image: radial-gradient(circle, rgba(255,215,0,0.07) 1px, transparent 1px);
+  background-size: 32px 32px;
+  pointer-events: none;
+}
+/* Gradient lumière */
+.hero::after {
+  content: '';
+  position: absolute; top: -80px; right: -80px;
+  width: 500px; height: 500px;
+  background: radial-gradient(circle, rgba(0,109,183,0.18) 0%, transparent 70%);
+  border-radius: 50%; pointer-events: none;
+}
+.hero-inner {
+  max-width: 1200px; margin: 0 auto;
+  display: grid; grid-template-columns: 1fr auto;
+  align-items: center; gap: 3rem;
+  position: relative; z-index: 2;
+}
+.hero-eyebrow {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  background: rgba(255,215,0,0.1); border: 1px solid rgba(255,215,0,0.3);
+  color: var(--yellow); padding: 0.3rem 1rem;
+  border-radius: 50px; font-size: 0.75rem; font-weight: 800;
+  letter-spacing: 1px; text-transform: uppercase; margin-bottom: 1.2rem;
+  animation: fadeUp 0.6s ease both;
+}
+@keyframes fadeUp {
+  from { opacity:0; transform: translateY(16px); }
+  to   { opacity:1; transform: translateY(0); }
+}
+.hero h1 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(3.2rem, 7vw, 6rem);
+  line-height: 0.9; letter-spacing: 2px;
+  color: #fff; margin-bottom: 1rem;
+  animation: fadeUp 0.6s 0.1s ease both;
+}
+.hero h1 em { color: var(--yellow); font-style: normal; }
+.hero h1 span.hero-year {
+  display: block; font-size: 0.6em;
+  color: rgba(255,255,255,0.35); letter-spacing: 8px;
+}
+.hero p {
+  font-size: 1rem; color: rgba(255,255,255,0.6);
+  margin-bottom: 2rem; max-width: 460px; line-height: 1.7;
+  animation: fadeUp 0.6s 0.2s ease both;
+}
+.hero-cta {
+  display: flex; gap: 1rem; flex-wrap: wrap;
+  animation: fadeUp 0.6s 0.3s ease both;
+}
+.btn-primary {
+  background: var(--red); color: #fff;
+  border: none; padding: 0.9rem 2rem; border-radius: 50px;
+  font-size: 0.95rem; font-weight: 800; cursor: pointer;
+  display: flex; align-items: center; gap: 0.5rem;
+  transition: var(--trans); font-family: 'Nunito', sans-serif;
+  box-shadow: 0 4px 20px rgba(227,0,11,0.4);
+}
+.btn-primary:hover { background: var(--red-dark); transform: translateY(-2px); box-shadow: 0 8px 32px rgba(227,0,11,0.55); }
+.btn-secondary {
+  background: rgba(255,255,255,0.06);
+  color: rgba(255,255,255,0.85);
+  border: 1.5px solid rgba(255,255,255,0.2);
+  padding: 0.9rem 2rem; border-radius: 50px;
+  font-size: 0.95rem; font-weight: 800; cursor: pointer;
+  display: flex; align-items: center; gap: 0.5rem;
+  transition: var(--trans); font-family: 'Nunito', sans-serif;
+}
+.btn-secondary:hover { background: rgba(255,215,0,0.1); border-color: var(--yellow); color: var(--yellow); }
+
+.hero-stats {
+  display: flex; gap: 0; flex-wrap: wrap;
+  margin-top: 2.5rem; animation: fadeUp 0.6s 0.4s ease both;
+}
+.hero-stat {
+  text-align: center; padding: 0 1.5rem;
+  border-right: 1px solid rgba(255,255,255,0.1);
+}
+.hero-stat:first-child { padding-left: 0; }
+.hero-stat:last-child { border-right: none; }
+.hero-stat-num { font-family: 'Bebas Neue', sans-serif; font-size: 2rem; color: var(--yellow); }
+.hero-stat-label { font-size: 0.7rem; color: rgba(255,255,255,0.4); font-weight: 700; letter-spacing: 0.5px; }
+
+/* SCENE BRIQUES 3D SVG HERO */
+.hero-visual {
+  position: relative; width: 340px; height: 320px;
+  flex-shrink: 0; animation: fadeUp 0.6s 0.5s ease both;
+}
+/* ══ BRIQUES SVG 3D ══ */
+.brick-svg-scene {
+  width: 100%; height: 100%;
+}
+
+/* ══ USP BAR ══ */
+.usp-bar {
+  background: var(--red);
+  border-bottom: 3px solid var(--yellow);
+  padding: 0.75rem 2rem;
+  display: flex; overflow-x: auto; scrollbar-width: none;
+}
+.usp-bar::-webkit-scrollbar { display: none; }
+.usp-item {
+  display: flex; align-items: center; gap: 0.5rem;
+  white-space: nowrap; font-size: 0.8rem; font-weight: 800;
+  flex: 1; justify-content: center; padding: 0 1rem;
+  border-right: 1px solid rgba(255,255,255,0.25);
+  color: #fff;
+}
+.usp-item:last-child { border-right: none; }
+.usp-item i { color: var(--yellow); font-size: 0.95rem; }
+
+/* ══ SHIPPING BLOCK ══ */
+.shipping-block {
+  background: var(--dark2);
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  padding: 3rem 2rem;
+}
+.shipping-block-inner {
+  max-width: 1000px; margin: 0 auto;
+  display: grid; grid-template-columns: 1fr auto 1fr auto 1fr;
+  align-items: center;
+}
+.ship-step { text-align: center; padding: 1rem 1.5rem; }
+.ship-step-icon {
+  width: 64px; height: 64px; border-radius: 50%;
+  background: rgba(255,215,0,0.08);
+  border: 2px solid rgba(255,215,0,0.25);
+  display: flex; align-items: center; justify-content: center;
+  margin: 0 auto 0.9rem; font-size: 1.5rem;
+  transition: var(--trans);
+}
+.ship-step:hover .ship-step-icon { background: var(--yellow); border-color: var(--yellow); }
+.ship-step:hover .ship-step-icon i { color: var(--dark) !important; }
+.ship-step-icon i { color: var(--yellow); transition: color 0.25s; }
+.ship-step-num {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 22px; height: 22px;
+  background: var(--yellow); color: var(--dark);
+  border-radius: 50%; font-size: 0.7rem; font-weight: 900;
+  margin-bottom: 0.5rem;
+}
+.ship-step h4 { font-size: 0.9rem; font-weight: 800; color: #fff; margin-bottom: 0.3rem; }
+.ship-step p { font-size: 0.75rem; color: rgba(255,255,255,0.45); line-height: 1.5; }
+.ship-arrow { color: rgba(255,215,0,0.3); font-size: 1.2rem; }
+.ship-promise {
+  max-width: 600px; margin: 2rem auto 0;
+  background: rgba(255,215,0,0.06);
+  border: 2px solid rgba(255,215,0,0.25);
+  border-radius: 60px; padding: 1rem 2rem;
+  display: flex; align-items: center; gap: 1.5rem; justify-content: center; flex-wrap: wrap;
+}
+.ship-promise-text h4 { font-size: 1rem; font-weight: 800; color: #fff; }
+.ship-promise-text p { font-size: 0.75rem; color: rgba(255,255,255,0.4); }
+.ship-badge { background: var(--yellow); color: var(--dark); font-family: 'Bebas Neue', sans-serif; font-size: 2rem; border-radius: 50px; padding: 0.3rem 1.2rem; letter-spacing: -1px; }
+
+/* ══ SEARCH BANNER ══ */
+.search-banner {
+  display: none; background: rgba(255,215,0,0.08);
+  border-bottom: 2px solid rgba(255,215,0,0.3);
+  padding: 0.6rem 2rem; align-items: center; gap: 1rem;
+  font-size: 0.85rem; font-weight: 700; color: var(--yellow);
+}
+.search-banner.show { display: flex; }
+.search-banner-clear {
+  margin-left: auto;
+  background: var(--red); color: #fff; border: none;
+  padding: 0.3rem 0.9rem; border-radius: 50px;
+  cursor: pointer; font-size: 0.75rem; font-weight: 800;
+  transition: var(--trans); font-family: 'Nunito', sans-serif;
+}
+.search-banner-clear:hover { background: var(--red-dark); }
+
+/* ══ CATÉGORIES VISUELLES 3D ══ */
+.categories-section {
+  padding: 2.5rem 2rem;
+  background: var(--dark);
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+.section-header {
+  display: flex; align-items: baseline; justify-content: space-between;
+  margin-bottom: 1.5rem; max-width: 1600px; margin-left: auto; margin-right: auto;
+}
+.section-title {
+  font-family: 'Bebas Neue', sans-serif; font-size: 2.2rem;
+  color: #fff; letter-spacing: 2px;
+}
+.section-title span { color: var(--yellow); }
+.see-all {
+  font-size: 0.8rem; font-weight: 800; color: var(--red);
+  cursor: pointer; border-bottom: 2px solid var(--red);
+  padding-bottom: 1px; transition: color 0.2s;
+}
+.see-all:hover { color: var(--yellow); border-bottom-color: var(--yellow); }
+
+.cat-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 0.9rem; max-width: 1600px; margin: 0 auto;
+}
+.cat-card {
+  background: var(--dark2);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: var(--radius);
+  padding: 1.2rem 0.8rem; text-align: center;
+  cursor: pointer; transition: var(--trans);
+  position: relative; overflow: hidden;
+}
+.cat-card::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0;
+  height: 3px; background: var(--cat-color, var(--yellow));
+  transform: scaleX(0); transition: transform 0.25s;
+}
+.cat-card:hover::before { transform: scaleX(1); }
+.cat-card:hover { border-color: rgba(255,255,255,0.15); transform: translateY(-4px); background: var(--dark3); }
+/* Brique mini en haut de chaque cat */
+.cat-brick-wrap {
+  height: 38px; display: flex;
+  align-items: flex-end; justify-content: center;
+  margin-bottom: 0.6rem;
+}
+.cat-name { font-size: 0.75rem; font-weight: 800; color: rgba(255,255,255,0.7); letter-spacing: 0.3px; }
+.cat-count { font-size: 0.65rem; color: rgba(255,255,255,0.3); font-weight: 600; margin-top: 2px; }
+
+/* ══ FILTERS ══ */
+.filters-bar {
+  background: var(--dark2);
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  padding: 0.9rem 2rem;
+  position: sticky; top: 108px; z-index: 900;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+}
+.filters-inner {
+  max-width: 1600px; margin: 0 auto;
+  display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap;
+}
+.filter-label {
+  font-size: 0.72rem; font-weight: 800; color: var(--gray);
+  text-transform: uppercase; letter-spacing: 1px;
+  display: flex; align-items: center; gap: 0.3rem; margin-right: 0.2rem;
+}
+.filter-chip {
+  display: flex; align-items: center; gap: 0.3rem;
+  padding: 0.35rem 0.85rem; border-radius: 50px;
+  border: 1.5px solid rgba(255,255,255,0.12);
+  background: transparent; cursor: pointer;
+  font-size: 0.75rem; font-weight: 800; color: rgba(255,255,255,0.55);
+  transition: var(--trans); white-space: nowrap;
+  font-family: 'Nunito', sans-serif;
+}
+.filter-chip i { font-size: 0.7rem; }
+.filter-chip:hover { border-color: var(--yellow); color: var(--yellow); background: rgba(255,215,0,0.07); }
+.filter-chip.active { border-color: var(--yellow); background: var(--yellow); color: var(--dark); }
+.sort-divider { width: 1px; height: 22px; background: rgba(255,255,255,0.1); margin: 0 0.3rem; }
+.sort-select {
+  padding: 0.35rem 2rem 0.35rem 0.85rem;
+  border-radius: 50px; border: 1.5px solid rgba(255,255,255,0.12);
+  font-size: 0.75rem; font-weight: 800; cursor: pointer;
+  outline: none; appearance: none;
+  background: transparent url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23666'/%3E%3C/svg%3E") no-repeat right 10px center;
+  color: rgba(255,255,255,0.55); transition: var(--trans);
+  font-family: 'Nunito', sans-serif;
+}
+.sort-select:focus { border-color: var(--yellow); }
+.sort-select option { background: var(--dark2); color: #e2e8f0; }
+.results-info { margin-left: auto; font-size: 0.75rem; color: var(--gray); font-weight: 700; display: flex; align-items: center; gap: 0.4rem; }
+
+/* ══ PRODUITS ══ */
+.products-section { padding: 2rem; max-width: 1600px; margin: 0 auto; }
+.products-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  gap: 1.1rem;
+}
+
+/* ══ PRODUCT CARD ══ */
+.product-card {
+  background: var(--dark2);
+  border-radius: var(--radius-lg);
+  border: 1px solid rgba(255,255,255,0.07);
+  overflow: hidden; transition: var(--trans);
+  position: relative; display: flex; flex-direction: column;
+}
+.product-card::after {
+  content: ''; position: absolute; inset: 0;
+  border-radius: var(--radius-lg);
+  border: 2px solid transparent;
+  transition: border-color 0.25s; pointer-events: none;
+}
+.product-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-lg); }
+.product-card:hover::after { border-color: rgba(255,215,0,0.4); }
+
+.card-badges {
+  position: absolute; top: 10px; left: 10px;
+  display: flex; flex-direction: column; gap: 0.25rem; z-index: 2;
+}
+.card-badge {
+  padding: 0.2rem 0.6rem; border-radius: 50px;
+  font-size: 0.62rem; font-weight: 900;
+  letter-spacing: 0.5px; text-transform: uppercase;
+}
+.card-badge.new { background: var(--success); color: #fff; }
+.card-badge.premium { background: var(--yellow); color: var(--dark); }
+
+.card-wish {
+  position: absolute; top: 10px; right: 10px; z-index: 2;
+  width: 32px; height: 32px; border-radius: 50%;
+  background: rgba(0,0,0,0.55); border: 1.5px solid rgba(255,255,255,0.15);
+  cursor: pointer; display: flex; align-items: center; justify-content: center;
+  transition: var(--trans); font-size: 0.85rem; color: rgba(255,255,255,0.4);
+  backdrop-filter: blur(4px);
+}
+.card-wish:hover { border-color: #e91e63; color: #e91e63; transform: scale(1.1); }
+.card-wish.active { background: rgba(233,30,99,0.2); border-color: #e91e63; color: #e91e63; }
+
+.card-img {
+  height: 185px;
+  background: linear-gradient(135deg, #1a2332 0%, #1f2d45 100%);
+  display: flex; align-items: center; justify-content: center;
+  overflow: hidden; position: relative;
+}
+.card-img::before {
+  content: ''; position: absolute;
+  top: 0; left: 0; right: 0; height: 3px;
+  background: linear-gradient(90deg, var(--yellow), var(--red));
+}
+.card-img img {
+  width: 100%; height: 100%;
+  object-fit: contain; padding: 0.7rem;
+  transition: transform 0.4s ease;
+  image-rendering: -webkit-optimize-contrast;
+}
+.product-card:hover .card-img img { transform: scale(1.08) translateY(-2px); }
+
+/* BRIQUE 3D SVG SUR CHAQUE CARD (fallback si pas d'image) */
+.card-brick-fallback {
+  display: none;
+  flex-direction: column; align-items: center; justify-content: center;
+  gap: 6px; width: 100%; height: 100%;
+}
+.card-img img[src=""] ~ .card-brick-fallback { display: flex; }
+
+.card-body { padding: 0.9rem 1rem 1rem; flex: 1; display: flex; flex-direction: column; }
+.card-theme { font-size: 0.65rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; color: var(--yellow); margin-bottom: 0.25rem; display: flex; align-items: center; gap: 0.25rem; }
+.card-name { font-size: 0.85rem; font-weight: 700; color: #e2e8f0; line-height: 1.35; margin-bottom: 0.5rem; flex: 1; }
+.card-stars { display: flex; align-items: center; gap: 0.25rem; margin-bottom: 0.5rem; }
+.card-stars i { color: var(--yellow); font-size: 0.68rem; }
+.card-stars span { font-size: 0.68rem; color: var(--gray); font-weight: 600; }
+.card-set {
+  display: inline-flex; align-items: center; gap: 0.25rem;
+  background: rgba(0,109,183,0.15); color: var(--blue);
+  color: #60a5fa;
+  padding: 0.15rem 0.5rem; border-radius: 4px;
+  font-size: 0.65rem; font-weight: 800; margin-bottom: 0.7rem;
+  border: 1px solid rgba(96,165,250,0.2);
+}
+.card-footer { display: flex; align-items: center; justify-content: space-between; gap: 0.4rem; margin-top: auto; }
+.card-price { font-family: 'Bebas Neue', sans-serif; font-size: 1.5rem; color: #fff; letter-spacing: -0.5px; }
+.card-price small { font-family: 'Nunito', sans-serif; font-size: 0.72rem; color: var(--gray); font-weight: 500; }
+.card-add {
+  display: flex; align-items: center; gap: 0.35rem;
+  background: var(--red); color: white;
+  border: none; padding: 0.5rem 0.9rem;
+  border-radius: 50px; font-size: 0.78rem; font-weight: 800;
+  cursor: pointer; transition: var(--trans); white-space: nowrap;
+  font-family: 'Nunito', sans-serif;
+}
+.card-add:hover { background: var(--red-dark); transform: scale(1.04); }
+.card-add.adding { background: var(--success); }
+.card-add i { font-size: 0.78rem; }
+
+/* ══ NO RESULTS ══ */
+.no-results { grid-column: 1/-1; text-align: center; padding: 5rem 2rem; color: var(--gray); }
+.no-results-icon { width: 80px; height: 80px; background: rgba(255,215,0,0.08); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem; font-size: 2rem; color: var(--yellow); opacity: 0.5; }
+.no-results h3 { font-size: 1.3rem; font-weight: 800; color: #e2e8f0; margin-bottom: 0.5rem; }
+.no-results p { font-size: 0.9rem; margin-bottom: 1.5rem; }
+.no-results button { background: var(--red); color: white; border: none; padding: 0.75rem 1.8rem; border-radius: 50px; font-weight: 800; cursor: pointer; font-size: 0.9rem; transition: var(--trans); font-family: 'Nunito', sans-serif; }
+.no-results button:hover { background: var(--red-dark); }
+
+/* ══ BANNER PROMO ══ */
+.promo-banner {
+  background: linear-gradient(135deg, var(--blue-dark), var(--blue));
+  border-top: 3px solid var(--yellow); border-bottom: 3px solid var(--yellow);
+  padding: 2.5rem 2rem;
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 2rem; flex-wrap: wrap;
+}
+.promo-banner-text h2 { font-family: 'Bebas Neue', sans-serif; font-size: 2.5rem; color: #fff; line-height: 1; }
+.promo-banner-text p { color: rgba(255,255,255,0.7); font-size: 0.9rem; margin-top: 0.4rem; }
+.promo-banner-visual { display: flex; gap: 0.6rem; align-items: flex-end; }
+/* Petites briques décoratives */
+.promo-bricks { display: flex; gap: 6px; align-items: flex-end; }
+.promo-btn { background: var(--yellow); color: var(--dark); border: none; padding: 0.85rem 2rem; border-radius: 50px; font-weight: 900; font-size: 0.9rem; cursor: pointer; transition: var(--trans); font-family: 'Nunito', sans-serif; white-space: nowrap; }
+.promo-btn:hover { background: var(--yellow-dark); transform: scale(1.04); }
+
+/* ══ NEWSLETTER ══ */
+.newsletter {
+  background: var(--dark2);
+  border-top: 1px solid rgba(255,255,255,0.05);
+  padding: 4rem 2rem; text-align: center;
+}
+.newsletter-inner { max-width: 480px; margin: 0 auto; }
+.newsletter h3 { font-family: 'Bebas Neue', sans-serif; font-size: 2.5rem; color: #fff; margin-bottom: 0.4rem; }
+.newsletter h3 span { color: var(--yellow); }
+.newsletter p { color: rgba(255,255,255,0.5); margin-bottom: 1.8rem; font-size: 0.9rem; }
+.newsletter-form {
+  display: flex;
+  background: rgba(255,255,255,0.05);
+  border: 1.5px solid rgba(255,255,255,0.12);
+  border-radius: 50px; overflow: hidden; padding: 4px;
+}
+.newsletter-form input {
+  flex: 1; background: transparent; border: none;
+  padding: 0.65rem 1.2rem; color: #e2e8f0;
+  font-size: 0.88rem; outline: none; font-family: 'Nunito', sans-serif;
+}
+.newsletter-form input::placeholder { color: rgba(255,255,255,0.25); }
+.newsletter-form button {
+  background: var(--yellow); color: var(--dark);
+  border: none; padding: 0.65rem 1.4rem;
+  border-radius: 50px; font-weight: 900;
+  cursor: pointer; font-size: 0.85rem;
+  display: flex; align-items: center; gap: 0.4rem;
+  font-family: 'Nunito', sans-serif; transition: var(--trans);
+}
+.newsletter-form button:hover { background: var(--yellow-dark); }
+
+/* ══ PAGES STATIQUES ══ */
+.page { display: none; }
+.page.active { display: block; }
+.static-hero {
+  background: var(--dark2);
+  padding: 3rem 2rem;
+  border-bottom: 3px solid var(--yellow);
+}
+.static-hero-inner { max-width: 900px; margin: 0 auto; }
+.static-hero h2 { font-family: 'Bebas Neue', sans-serif; font-size: 2.5rem; font-weight: 400; margin-bottom: 0.4rem; color: #fff; display: flex; align-items: center; gap: 0.7rem; }
+.static-hero h2 i { color: var(--yellow); }
+.static-hero p { color: rgba(255,255,255,0.5); font-size: 0.95rem; }
+.static-content { max-width: 900px; margin: 2rem auto; padding: 0 2rem; }
+
+.info-card { background: var(--dark2); border-radius: var(--radius-lg); padding: 1.8rem; margin-bottom: 1.2rem; border: 1px solid rgba(255,255,255,0.07); }
+.info-card-header { display: flex; align-items: center; gap: 0.8rem; margin-bottom: 1.2rem; }
+.info-card-icon { width: 40px; height: 40px; border-radius: 10px; background: rgba(255,215,0,0.1); color: var(--yellow); display: flex; align-items: center; justify-content: center; font-size: 1rem; flex-shrink: 0; }
+.info-card h3 { font-size: 1rem; font-weight: 800; color: #e2e8f0; }
+.info-card p, .info-card li { color: rgba(255,255,255,0.5); line-height: 1.75; font-size: 0.88rem; }
+.info-card ul { padding-left: 1.2rem; display: flex; flex-direction: column; gap: 0.3rem; }
+.info-card strong { color: rgba(255,255,255,0.85); }
+
+.data-table { width: 100%; border-collapse: collapse; }
+.data-table thead th { background: rgba(255,215,0,0.08); padding: 0.7rem 1rem; text-align: left; font-size: 0.72rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; color: var(--yellow); border-bottom: 1px solid rgba(255,255,255,0.08); }
+.data-table tbody td { padding: 0.8rem 1rem; font-size: 0.85rem; border-bottom: 1px solid rgba(255,255,255,0.05); color: rgba(255,255,255,0.6); }
+.data-table tbody tr:last-child td { border-bottom: none; }
+.data-table tbody tr:hover td { background: rgba(255,255,255,0.03); }
+.tag-free { background: rgba(0,200,81,0.15); color: var(--success); padding: 0.2rem 0.6rem; border-radius: 4px; font-size: 0.75rem; font-weight: 800; border: 1px solid rgba(0,200,81,0.3); }
+
+.wishlist-empty { text-align: center; padding: 4rem 2rem; color: var(--gray); background: var(--dark2); border-radius: var(--radius-lg); border: 1px solid rgba(255,255,255,0.07); }
+.wishlist-empty i { font-size: 3rem; color: rgba(255,255,255,0.1); margin-bottom: 1rem; display: block; }
+.wishlist-empty h4 { font-size: 1.1rem; font-weight: 800; color: #e2e8f0; margin-bottom: 0.5rem; }
+
+/* ══ CART ══ */
+.cart-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.65); z-index: 2000; opacity: 0; pointer-events: none; transition: opacity 0.3s; backdrop-filter: blur(4px); }
+.cart-overlay.open { opacity: 1; pointer-events: all; }
+.cart-panel { position: fixed; right: -460px; top: 0; bottom: 0; width: 440px; max-width: 95vw; background: var(--dark2); z-index: 2001; transition: right 0.35s cubic-bezier(0.4,0,0.2,1); display: flex; flex-direction: column; box-shadow: -10px 0 60px rgba(0,0,0,0.7); border-left: 3px solid var(--yellow); }
+.cart-panel.open { right: 0; }
+.cart-header { border-bottom: 1px solid rgba(255,255,255,0.08); padding: 1.2rem 1.5rem; display: flex; align-items: center; justify-content: space-between; border-top: 3px solid var(--yellow); }
+.cart-header-left { display: flex; align-items: center; gap: 0.7rem; }
+.cart-header-left i { font-size: 1.1rem; color: var(--yellow); }
+.cart-header h3 { font-size: 1rem; font-weight: 800; color: #e2e8f0; }
+.cart-header-count { background: var(--red); color: white; border-radius: 50px; padding: 0.1rem 0.5rem; font-size: 0.68rem; font-weight: 800; }
+.cart-close { background: rgba(255,255,255,0.08); border: none; width: 32px; height: 32px; border-radius: 50%; cursor: pointer; color: rgba(255,255,255,0.6); font-size: 0.85rem; display: flex; align-items: center; justify-content: center; transition: var(--trans); }
+.cart-close:hover { background: var(--red); color: white; }
+.cart-body { flex: 1; overflow-y: auto; padding: 1rem; }
+.cart-empty { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; color: var(--gray); text-align: center; gap: 0.8rem; }
+.cart-empty i { font-size: 3rem; color: rgba(255,255,255,0.08); }
+.cart-empty h4 { font-size: 1.05rem; font-weight: 800; color: rgba(255,255,255,0.4); }
+.cart-empty p { font-size: 0.82rem; }
+.cart-item { display: flex; gap: 0.9rem; padding: 0.9rem; background: rgba(255,255,255,0.04); border-radius: var(--radius); margin-bottom: 0.6rem; border: 1px solid rgba(255,255,255,0.07); transition: border-color 0.2s; }
+.cart-item:hover { border-color: rgba(255,215,0,0.25); }
+.cart-item-img { width: 68px; height: 68px; object-fit: contain; border-radius: 8px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08); padding: 4px; flex-shrink: 0; }
+.cart-item-info { flex: 1; min-width: 0; }
+.cart-item-theme { font-size: 0.65rem; font-weight: 800; color: var(--yellow); text-transform: uppercase; letter-spacing: 0.5px; }
+.cart-item-name { font-size: 0.82rem; font-weight: 700; color: rgba(255,255,255,0.8); margin: 0.15rem 0 0.4rem; line-height: 1.3; }
+.cart-item-price { font-size: 0.92rem; font-weight: 900; color: #fff; }
+.cart-item-controls { display: flex; align-items: center; gap: 0.4rem; margin-top: 0.5rem; }
+.qty-btn { width: 24px; height: 24px; border-radius: 50%; border: 1.5px solid rgba(255,255,255,0.15); background: rgba(255,255,255,0.06); cursor: pointer; font-weight: 800; font-size: 0.8rem; display: flex; align-items: center; justify-content: center; transition: var(--trans); color: rgba(255,255,255,0.7); }
+.qty-btn:hover { border-color: var(--yellow); color: var(--yellow); }
+.qty-value { font-weight: 800; min-width: 22px; text-align: center; font-size: 0.88rem; color: #fff; }
+.cart-remove { margin-left: auto; background: none; border: none; color: rgba(255,255,255,0.2); cursor: pointer; font-size: 0.85rem; padding: 0.2rem; transition: color 0.2s; display: flex; align-items: center; }
+.cart-remove:hover { color: var(--red); }
+.cart-footer { border-top: 1px solid rgba(255,255,255,0.08); padding: 1.2rem 1.5rem; display: none; }
+.free-ship-bar { margin-bottom: 1.2rem; }
+.free-ship-label { display: flex; justify-content: space-between; font-size: 0.75rem; font-weight: 700; color: rgba(255,255,255,0.4); margin-bottom: 0.5rem; }
+.free-ship-label span:last-child { color: var(--success); font-weight: 800; }
+.free-ship-track { background: rgba(255,255,255,0.08); border-radius: 50px; height: 6px; overflow: hidden; }
+.free-ship-fill { background: linear-gradient(90deg, var(--blue), var(--yellow)); height: 100%; border-radius: 50px; transition: width 0.5s ease; }
+.cart-subtotal { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
+.cart-subtotal-label { font-size: 0.82rem; color: rgba(255,255,255,0.4); font-weight: 600; }
+.cart-subtotal-value { font-family: 'Bebas Neue', sans-serif; font-size: 1.8rem; color: #fff; }
+.cart-shipping-note { display: flex; align-items: center; gap: 0.5rem; background: rgba(0,200,81,0.1); border: 1px solid rgba(0,200,81,0.3); border-radius: 8px; padding: 0.6rem 0.9rem; font-size: 0.75rem; font-weight: 800; color: var(--success); margin-bottom: 1rem; }
+.btn-checkout { width: 100%; background: var(--red); color: white; border: none; padding: 1rem; border-radius: 50px; font-size: 0.95rem; font-weight: 800; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 0.6rem; transition: var(--trans); font-family: 'Nunito', sans-serif; box-shadow: 0 4px 20px rgba(227,0,11,0.4); }
+.btn-checkout:hover { background: var(--red-dark); transform: translateY(-1px); }
+.payment-icons { display: flex; justify-content: center; gap: 0.5rem; margin-top: 0.8rem; flex-wrap: wrap; }
+.payment-icon { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 4px; padding: 0.25rem 0.6rem; font-size: 0.72rem; color: rgba(255,255,255,0.4); font-weight: 700; display: flex; align-items: center; gap: 0.25rem; }
+
+/* ══ TOAST ══ */
+.toast-wrap { position: fixed; bottom: 1.5rem; right: 1.5rem; z-index: 9999; display: flex; flex-direction: column; gap: 0.5rem; pointer-events: none; }
+.toast { background: var(--dark2); border-radius: var(--radius); padding: 0.9rem 1.2rem; box-shadow: 0 8px 32px rgba(0,0,0,0.5); font-size: 0.82rem; font-weight: 700; display: flex; align-items: center; gap: 0.8rem; max-width: 320px; border-left: 4px solid var(--success); animation: toastIn 0.3s cubic-bezier(0.34,1.56,0.64,1), toastOut 0.3s ease 2.7s forwards; pointer-events: all; color: rgba(255,255,255,0.85); border-top: 1px solid rgba(255,255,255,0.08); }
+.toast.error { border-left-color: var(--red); }
+.toast.info  { border-left-color: var(--blue); }
+.toast.warning { border-left-color: var(--yellow); }
+.toast i { font-size: 1rem; flex-shrink: 0; }
+.toast.error i { color: var(--red); }
+.toast.success i { color: var(--success); }
+.toast.info i { color: #60a5fa; }
+.toast.warning i { color: var(--yellow); }
+@keyframes toastIn  { from { transform: translateX(120%) scale(0.9); opacity: 0; } to { transform: translateX(0) scale(1); opacity: 1; } }
+@keyframes toastOut { to { transform: translateX(120%) scale(0.9); opacity: 0; } }
+
+/* ══ HIGHLIGHT ══ */
+mark { background: rgba(255,215,0,0.3); border-radius: 2px; padding: 0 2px; color: #fff; }
+
+/* ══ SCROLL TOP ══ */
+.scroll-top { position: fixed; bottom: 1.5rem; left: 1.5rem; width: 42px; height: 42px; background: var(--dark2); color: var(--yellow); border: 2px solid var(--yellow); border-radius: 50%; cursor: pointer; font-size: 0.85rem; display: flex; align-items: center; justify-content: center; box-shadow: var(--shadow); transition: var(--trans); opacity: 0; pointer-events: none; z-index: 500; }
+.scroll-top.visible { opacity: 1; pointer-events: all; }
+.scroll-top:hover { background: var(--yellow); color: var(--dark); transform: translateY(-2px); }
+
+/* ══ FOOTER ══ */
+footer { background: var(--dark); color: rgba(255,255,255,0.3); padding: 2rem; text-align: center; font-size: 0.78rem; border-top: 4px solid var(--yellow); }
+footer strong { color: rgba(255,255,255,0.7); }
+.footer-logo { font-family: 'Bebas Neue', sans-serif; font-size: 2rem; letter-spacing: 2px; color: rgba(255,255,255,0.5); margin-bottom: 0.4rem; }
+.footer-logo span { color: var(--yellow); }
+.footer-links { display: flex; justify-content: center; gap: 1.5rem; flex-wrap: wrap; margin-top: 0.8rem; }
+.footer-links a { color: rgba(255,255,255,0.25); text-decoration: none; font-size: 0.75rem; transition: color 0.2s; }
+.footer-links a:hover { color: var(--yellow); }
+
+/* ══ PAGE PRODUIT DÉTAIL ══ */
+.breadcrumb {
+  display: flex; align-items: center; gap: 0.5rem;
+  padding: 1rem 2rem; max-width: 1300px; margin: 0 auto;
+  font-size: 0.78rem; color: rgba(255,255,255,0.35);
+  flex-wrap: wrap;
+}
+.breadcrumb span { cursor: pointer; transition: color 0.2s; }
+.breadcrumb span:hover { color: var(--yellow); }
+.breadcrumb i { font-size: 0.6rem; color: rgba(255,255,255,0.2); }
+.breadcrumb .bc-current { color: rgba(255,255,255,0.6); font-weight: 700; cursor: default; }
+
+.product-detail {
+  max-width: 1300px; margin: 0 auto;
+  padding: 0 2rem 4rem;
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 3rem; align-items: start;
+}
+
+/* ── Galerie ── */
+.pd-gallery { position: sticky; top: 130px; }
+.pd-main-img {
+  background: linear-gradient(135deg, #1a2332, #1f2d45);
+  border-radius: var(--radius-lg);
+  border: 1px solid rgba(255,255,255,0.08);
+  aspect-ratio: 1;
+  display: flex; align-items: center; justify-content: center;
+  overflow: hidden; position: relative; margin-bottom: 0.8rem;
+  cursor: zoom-in;
+}
+.pd-main-img::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px;
+  background: linear-gradient(90deg, var(--yellow), var(--red));
+}
+.pd-main-img img {
+  width: 85%; height: 85%; object-fit: contain;
+  transition: transform 0.4s ease;
+}
+.pd-main-img:hover img { transform: scale(1.08); }
+.pd-zoom-hint {
+  position: absolute; bottom: 12px; right: 12px;
+  background: rgba(0,0,0,0.55); color: rgba(255,255,255,0.6);
+  font-size: 0.68rem; font-weight: 700; padding: 0.25rem 0.6rem;
+  border-radius: 4px; backdrop-filter: blur(4px);
+  display: flex; align-items: center; gap: 0.3rem;
+}
+.pd-badge-overlay {
+  position: absolute; top: 12px; left: 12px;
+  display: flex; flex-direction: column; gap: 0.4rem; z-index: 2;
+}
+
+.pd-thumbnails {
+  display: flex; gap: 0.6rem; overflow-x: auto; scrollbar-width: none;
+}
+.pd-thumbnails::-webkit-scrollbar { display: none; }
+.pd-thumb {
+  width: 72px; height: 72px; flex-shrink: 0;
+  background: var(--dark2); border-radius: var(--radius);
+  border: 2px solid rgba(255,255,255,0.08);
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; overflow: hidden; transition: var(--trans);
+}
+.pd-thumb:hover { border-color: rgba(255,215,0,0.4); }
+.pd-thumb.active { border-color: var(--yellow); }
+.pd-thumb img { width: 85%; height: 85%; object-fit: contain; }
+
+/* ── Infos produit ── */
+.pd-info { display: flex; flex-direction: column; gap: 1.2rem; }
+
+.pd-theme-badge {
+  display: inline-flex; align-items: center; gap: 0.4rem;
+  background: rgba(255,215,0,0.1); border: 1px solid rgba(255,215,0,0.25);
+  color: var(--yellow); padding: 0.28rem 0.8rem; border-radius: 50px;
+  font-size: 0.72rem; font-weight: 800; letter-spacing: 0.8px; text-transform: uppercase;
+  width: fit-content;
+}
+
+.pd-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+  color: #fff; line-height: 1; letter-spacing: 1px;
+}
+
+.pd-meta-row {
+  display: flex; align-items: center; gap: 1rem; flex-wrap: wrap;
+}
+.pd-setnum {
+  display: flex; align-items: center; gap: 0.3rem;
+  background: rgba(96,165,250,0.1); color: #60a5fa;
+  padding: 0.2rem 0.6rem; border-radius: 4px;
+  font-size: 0.72rem; font-weight: 800;
+  border: 1px solid rgba(96,165,250,0.2);
+}
+.pd-stars { display: flex; align-items: center; gap: 0.3rem; }
+.pd-stars i { color: var(--yellow); font-size: 0.78rem; }
+.pd-stars-count { font-size: 0.78rem; color: rgba(255,255,255,0.4); font-weight: 600; }
+.pd-reviews-link { font-size: 0.78rem; color: #60a5fa; cursor: pointer; text-decoration: underline; }
+
+/* Prix */
+.pd-price-block {
+  background: rgba(255,215,0,0.05);
+  border: 1px solid rgba(255,215,0,0.15);
+  border-radius: var(--radius); padding: 1.2rem 1.4rem;
+  display: flex; align-items: center; gap: 1.5rem; flex-wrap: wrap;
+}
+.pd-price-main { font-family: 'Bebas Neue', sans-serif; font-size: 3rem; color: #fff; line-height: 1; }
+.pd-price-main span { font-size: 1.4rem; vertical-align: top; margin-top: 0.3rem; display: inline-block; color: rgba(255,255,255,0.6); }
+.pd-price-sub { display: flex; flex-direction: column; gap: 0.25rem; }
+.pd-price-vat { font-size: 0.72rem; color: rgba(255,255,255,0.35); font-weight: 600; }
+.pd-price-ship {
+  display: flex; align-items: center; gap: 0.35rem;
+  font-size: 0.75rem; font-weight: 700;
+  color: var(--success);
+}
+
+/* Stock */
+.pd-stock {
+  display: flex; align-items: center; gap: 0.5rem;
+  font-size: 0.82rem; font-weight: 800;
+}
+.pd-stock-dot {
+  width: 9px; height: 9px; border-radius: 50%;
+  background: var(--success);
+  box-shadow: 0 0 8px rgba(0,200,81,0.6);
+  animation: stockPulse 2s ease-in-out infinite;
+}
+@keyframes stockPulse { 0%,100%{opacity:1} 50%{opacity:0.5} }
+.pd-stock span { color: var(--success); }
+.pd-stock-low .pd-stock-dot { background: var(--yellow); box-shadow: 0 0 8px rgba(255,215,0,0.6); }
+.pd-stock-low span { color: var(--yellow); }
+
+/* Quantité + ajout */
+.pd-buy-block { display: flex; flex-direction: column; gap: 0.8rem; }
+.pd-qty-row { display: flex; align-items: center; gap: 1rem; }
+.pd-qty-label { font-size: 0.8rem; font-weight: 800; color: rgba(255,255,255,0.5); text-transform: uppercase; letter-spacing: 0.5px; }
+.pd-qty-ctrl {
+  display: flex; align-items: center; gap: 0;
+  background: var(--dark3); border: 1.5px solid rgba(255,255,255,0.12);
+  border-radius: 50px; overflow: hidden;
+}
+.pd-qty-btn {
+  width: 38px; height: 38px; border: none; background: transparent;
+  color: rgba(255,255,255,0.7); cursor: pointer; font-size: 1rem;
+  display: flex; align-items: center; justify-content: center;
+  transition: var(--trans); font-family: 'Nunito', sans-serif;
+}
+.pd-qty-btn:hover { background: rgba(255,255,255,0.08); color: var(--yellow); }
+.pd-qty-val {
+  min-width: 44px; text-align: center;
+  font-size: 1rem; font-weight: 900; color: #fff;
+  border-left: 1px solid rgba(255,255,255,0.08);
+  border-right: 1px solid rgba(255,255,255,0.08);
+  padding: 0 0.5rem; line-height: 38px;
+}
+
+.pd-btn-add {
+  display: flex; align-items: center; justify-content: center; gap: 0.6rem;
+  background: var(--red); color: #fff;
+  border: none; border-radius: 50px; padding: 1rem 2rem;
+  font-size: 1rem; font-weight: 900; cursor: pointer;
+  transition: var(--trans); font-family: 'Nunito', sans-serif;
+  box-shadow: 0 4px 20px rgba(227,0,11,0.4);
+}
+.pd-btn-add:hover { background: var(--red-dark); transform: translateY(-2px); box-shadow: 0 8px 32px rgba(227,0,11,0.55); }
+.pd-btn-add.adding { background: var(--success); box-shadow: 0 4px 20px rgba(0,200,81,0.4); }
+.pd-btn-wish {
+  display: flex; align-items: center; justify-content: center; gap: 0.5rem;
+  background: transparent; color: rgba(255,255,255,0.6);
+  border: 1.5px solid rgba(255,255,255,0.15); border-radius: 50px;
+  padding: 1rem 1.5rem; font-size: 0.9rem; font-weight: 800;
+  cursor: pointer; transition: var(--trans); font-family: 'Nunito', sans-serif;
+}
+.pd-btn-wish:hover { border-color: #e91e63; color: #e91e63; }
+.pd-btn-wish.active { background: rgba(233,30,99,0.1); border-color: #e91e63; color: #e91e63; }
+
+.pd-actions-row { display: flex; gap: 0.8rem; flex-wrap: wrap; }
+.pd-actions-row .pd-btn-add { flex: 1; min-width: 200px; }
+
+/* Garanties */
+.pd-guarantees {
+  display: grid; grid-template-columns: repeat(3,1fr); gap: 0.6rem;
+}
+.pd-guarantee {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: var(--radius); padding: 0.8rem 0.6rem;
+  text-align: center; transition: var(--trans);
+}
+.pd-guarantee:hover { border-color: rgba(255,215,0,0.2); background: rgba(255,215,0,0.03); }
+.pd-guarantee i { font-size: 1.2rem; color: var(--yellow); margin-bottom: 0.4rem; display: block; }
+.pd-guarantee span { font-size: 0.68rem; font-weight: 700; color: rgba(255,255,255,0.5); line-height: 1.4; }
+
+/* ── Onglets détail ── */
+.pd-tabs { margin-top: 0.5rem; }
+.pd-tab-nav {
+  display: flex; border-bottom: 2px solid rgba(255,255,255,0.08);
+  gap: 0; overflow-x: auto; scrollbar-width: none;
+}
+.pd-tab-nav::-webkit-scrollbar { display: none; }
+.pd-tab-btn {
+  background: none; border: none; border-bottom: 3px solid transparent;
+  margin-bottom: -2px; padding: 0.75rem 1.2rem;
+  font-size: 0.82rem; font-weight: 800; color: rgba(255,255,255,0.4);
+  cursor: pointer; white-space: nowrap; transition: var(--trans);
+  font-family: 'Nunito', sans-serif;
+}
+.pd-tab-btn:hover { color: rgba(255,255,255,0.7); }
+.pd-tab-btn.active { color: var(--yellow); border-bottom-color: var(--yellow); }
+.pd-tab-content { padding: 1.4rem 0; display: none; }
+.pd-tab-content.active { display: block; }
+
+/* Specs table */
+.pd-specs { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; }
+.pd-spec-row {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0.65rem 0.9rem;
+  background: rgba(255,255,255,0.03);
+  border-radius: 8px; border: 1px solid rgba(255,255,255,0.06);
+}
+.pd-spec-label { font-size: 0.75rem; color: rgba(255,255,255,0.4); font-weight: 700; }
+.pd-spec-value { font-size: 0.82rem; color: rgba(255,255,255,0.85); font-weight: 800; }
+
+/* Description */
+.pd-description { font-size: 0.88rem; color: rgba(255,255,255,0.55); line-height: 1.8; }
+.pd-description p { margin-bottom: 0.8rem; }
+.pd-description strong { color: rgba(255,255,255,0.85); }
+.pd-features { list-style: none; margin-top: 1rem; display: flex; flex-direction: column; gap: 0.5rem; }
+.pd-features li { display: flex; align-items: flex-start; gap: 0.6rem; font-size: 0.85rem; color: rgba(255,255,255,0.6); }
+.pd-features li i { color: var(--yellow); font-size: 0.75rem; margin-top: 0.22rem; flex-shrink: 0; }
+
+/* Avis */
+.pd-reviews { display: flex; flex-direction: column; gap: 1rem; }
+.pd-review-summary {
+  display: flex; align-items: center; gap: 2rem;
+  background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.07);
+  border-radius: var(--radius); padding: 1.2rem 1.4rem; margin-bottom: 0.5rem; flex-wrap: wrap;
+}
+.pd-review-big { font-family: 'Bebas Neue', sans-serif; font-size: 4rem; color: #fff; line-height: 1; }
+.pd-review-stars { display: flex; gap: 0.25rem; margin: 0.3rem 0; }
+.pd-review-stars i { color: var(--yellow); font-size: 1rem; }
+.pd-review-count { font-size: 0.75rem; color: rgba(255,255,255,0.4); font-weight: 600; }
+.pd-review-bars { flex: 1; min-width: 160px; display: flex; flex-direction: column; gap: 0.35rem; }
+.pd-review-bar-row { display: flex; align-items: center; gap: 0.6rem; font-size: 0.7rem; color: rgba(255,255,255,0.4); font-weight: 700; }
+.pd-review-bar-track { flex: 1; height: 5px; background: rgba(255,255,255,0.08); border-radius: 3px; overflow: hidden; }
+.pd-review-bar-fill { height: 100%; background: var(--yellow); border-radius: 3px; }
+.pd-review-card {
+  background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.07);
+  border-radius: var(--radius); padding: 1rem 1.2rem;
+}
+.pd-review-header { display: flex; align-items: center; gap: 0.8rem; margin-bottom: 0.6rem; }
+.pd-reviewer-avatar {
+  width: 36px; height: 36px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.75rem; font-weight: 900; flex-shrink: 0;
+}
+.pd-reviewer-name { font-size: 0.82rem; font-weight: 800; color: rgba(255,255,255,0.8); }
+.pd-reviewer-date { font-size: 0.7rem; color: rgba(255,255,255,0.3); }
+.pd-review-text { font-size: 0.82rem; color: rgba(255,255,255,0.55); line-height: 1.6; }
+.pd-review-stars-small { display: flex; gap: 0.2rem; margin-bottom: 0.4rem; }
+.pd-review-stars-small i { color: var(--yellow); font-size: 0.65rem; }
+.pd-verified { display: inline-flex; align-items: center; gap: 0.25rem; font-size: 0.65rem; font-weight: 800; color: var(--success); margin-left: auto; }
+
+/* ── Section produits similaires ── */
+.pd-related {
+  max-width: 1300px; margin: 0 auto;
+  padding: 0 2rem 4rem;
+}
+.pd-related-title {
+  font-family: 'Bebas Neue', sans-serif; font-size: 1.8rem;
+  color: #fff; letter-spacing: 1px; margin-bottom: 1.2rem;
+  border-left: 4px solid var(--yellow); padding-left: 0.8rem;
+}
+.pd-related-title span { color: var(--yellow); }
+.pd-related-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px,1fr));
+  gap: 1rem;
+}
+
+/* Lightbox zoom image */
+.pd-lightbox {
+  position: fixed; inset: 0; z-index: 9000;
+  background: rgba(0,0,0,0.92); backdrop-filter: blur(8px);
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0; pointer-events: none; transition: opacity 0.25s;
+}
+.pd-lightbox.open { opacity: 1; pointer-events: all; }
+.pd-lightbox img { max-width: 80vw; max-height: 80vh; object-fit: contain; border-radius: var(--radius); }
+.pd-lightbox-close {
+  position: absolute; top: 1.5rem; right: 1.5rem;
+  width: 44px; height: 44px; border-radius: 50%;
+  background: rgba(255,255,255,0.1); border: 1.5px solid rgba(255,255,255,0.2);
+  color: #fff; font-size: 1.1rem; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: var(--trans);
+}
+.pd-lightbox-close:hover { background: var(--red); border-color: var(--red); }
+
+@media(max-width:900px) {
+  .product-detail { grid-template-columns: 1fr; gap: 1.5rem; }
+  .pd-gallery { position: static; }
+  .pd-specs { grid-template-columns: 1fr; }
+  .pd-guarantees { grid-template-columns: 1fr 1fr; }
+}
+@media(max-width:600px) {
+  .product-detail { padding: 0 1rem 3rem; }
+  .pd-related { padding: 0 1rem 3rem; }
+  .pd-guarantees { grid-template-columns: 1fr; }
+}
+
+/* ══ RESPONSIVE ══ */
+@media(max-width:900px) {
+  .shipping-block-inner { grid-template-columns: 1fr; gap: 0; }
+  .ship-arrow { transform: rotate(90deg); text-align: center; }
+  .hero-inner { grid-template-columns: 1fr; }
+  .hero-visual { display: none; }
+}
+@media(max-width:768px) {
+  .topbar { display: none; }
+  .header-main { padding: 0.7rem 1rem; gap: 0.8rem; }
+  .logo-text { font-size: 1.5rem; }
+  .action-btn > span { display: none; }
+  .hero { padding: 2.5rem 1rem; }
+  .filters-bar { top: 76px; }
+  .products-section { padding: 1rem; }
+  .products-grid { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 0.7rem; }
+  .card-img { height: 150px; }
+  .cart-panel { width: 100%; }
+}
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <div class="topbar-left">
+    <span><i class="fa-solid fa-bolt"></i> <span class="highlight">Expédié en 2 jours ouvrés</span></span>
+    <span><i class="fa-solid fa-shield-halved"></i> Paiement sécurisé SSL</span>
+    <span><i class="fa-solid fa-rotate-left"></i> Retours 30 jours</span>
+  </div>
+  <div class="topbar-right">
+    <a href="#" onclick="showPage('shipping');return false">Expédition</a>
+    <a href="#" onclick="showPage('returns');return false">Retours</a>
+    <a href="#">Aide</a>
+    <a href="#">Mon compte</a>
+  </div>
+</div>
+
+<!-- HEADER -->
+<header>
+  <div class="header-main">
+    <span class="logo" onclick="goHome()">
+      <div class="logo-brick-wrap">
+        <div class="logo-brick-stud"></div>
+        <div class="logo-brick-body"></div>
+        <div class="logo-brick-shadow"></div>
+      </div>
+      <div>
+        <div class="logo-text">Brick<span>Store</span></div>
+        <span class="logo-year">CATALOGUE 2026</span>
+      </div>
+    </span>
+
+    <div class="search-wrap">
+      <div class="search-container">
+        <button class="search-icon-btn" onclick="handleSearch(document.getElementById('searchInput').value)">
+          <i class="fa-solid fa-magnifying-glass"></i>
+        </button>
+        <input type="text" id="searchInput" class="search-input"
+          placeholder="Rechercher un set, thème, numéro…"
+          oninput="handleSearch(this.value)"
+          onkeydown="if(event.key==='Enter') handleSearch(this.value)"
+          autocomplete="off">
+        <button class="search-clear" id="searchClearBtn" onclick="clearSearch()">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+        <button class="search-submit" onclick="handleSearch(document.getElementById('searchInput').value)">
+          <i class="fa-solid fa-magnifying-glass"></i> Rechercher
+        </button>
+      </div>
+    </div>
+
+    <div class="header-actions">
+      <button class="action-btn" onclick="showPage('wishlist')" title="Favoris">
+        <i class="fa-regular fa-heart"></i><span>Favoris</span>
+        <div class="action-badge" id="wishBadge">0</div>
+      </button>
+      <button class="action-btn" onclick="showPage('account')" title="Compte">
+        <i class="fa-regular fa-circle-user"></i><span>Compte</span>
+      </button>
+      <button class="action-btn btn-cart" onclick="openCart()">
+        <i class="fa-solid fa-bag-shopping"></i><span>Panier</span>
+        <div class="action-badge" id="cartBadge">0</div>
+      </button>
+    </div>
+  </div>
+
+  <nav>
+    <div class="nav-inner">
+      <button class="nav-link active" id="navHome" onclick="goHome()"><i class="fa-solid fa-house"></i> Accueil</button>
+      <button class="nav-link" onclick="filterByTheme('Star Wars')"><i class="fa-solid fa-star"></i> Star Wars</button>
+      <button class="nav-link" onclick="filterByTheme('Technic')"><i class="fa-solid fa-gear"></i> Technic</button>
+      <button class="nav-link" onclick="filterByTheme('Harry Potter')"><i class="fa-solid fa-hat-wizard"></i> Harry Potter</button>
+      <button class="nav-link" onclick="filterByTheme('Marvel')"><i class="fa-solid fa-mask"></i> Marvel</button>
+      <button class="nav-link" onclick="filterByTheme('Speed Champions')"><i class="fa-solid fa-flag-checkered"></i> Speed Champions</button>
+      <button class="nav-link" onclick="filterByTheme('Creator Expert')"><i class="fa-solid fa-landmark"></i> Creator Expert</button>
+      <button class="nav-link" onclick="filterByTheme('City')"><i class="fa-solid fa-city"></i> City</button>
+      <button class="nav-link" onclick="filterByTheme('Disney')"><i class="fa-solid fa-wand-magic-sparkles"></i> Disney</button>
+      <button class="nav-link" onclick="filterByTheme('Ninjago')"><i class="fa-solid fa-dragon"></i> Ninjago</button>
+      <button class="nav-link" onclick="showPage('shipping')"><i class="fa-solid fa-box-open"></i> Expédition</button>
+      <button class="nav-link" onclick="showPage('returns')"><i class="fa-solid fa-arrow-rotate-left"></i> Retours</button>
+    </div>
+  </nav>
+</header>
+
+<!-- ═══ PAGE ACCUEIL ═══ -->
+<div class="page active" id="page-home">
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-text">
+      <div class="hero-eyebrow"><i class="fa-solid fa-bolt"></i> Catalogue 2026 — Plus de 130 sets</div>
+      <h1>La référence<br><em>LEGO®</em><br><span class="hero-year">FRANCE · 2026</span></h1>
+      <p>Découvrez notre sélection exclusive de sets LEGO® officiels aux meilleurs prix — Technic, Star Wars, Harry Potter et bien plus.</p>
+      <div class="hero-cta">
+        <button class="btn-primary" onclick="document.getElementById('filters-anchor').scrollIntoView({behavior:'smooth'})">
+          <i class="fa-solid fa-th-large"></i> Voir le catalogue
+        </button>
+        <button class="btn-secondary" onclick="filterByTheme('Creator Expert')">
+          <i class="fa-solid fa-fire"></i> Sets premium
+        </button>
+      </div>
+      <div class="hero-stats">
+        <div class="hero-stat"><div class="hero-stat-num">130+</div><div class="hero-stat-label">Sets dispo</div></div>
+        <div class="hero-stat"><div class="hero-stat-num">16</div><div class="hero-stat-label">Thèmes</div></div>
+        <div class="hero-stat"><div class="hero-stat-num">2J</div><div class="hero-stat-label">Expédition</div></div>
+        <div class="hero-stat"><div class="hero-stat-num">4.9★</div><div class="hero-stat-label">Note client</div></div>
+      </div>
+    </div>
+
+    <!-- SCÈNE BRIQUES 3D SVG -->
+    <div class="hero-visual">
+      <svg class="brick-svg-scene" viewBox="0 0 340 320" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <filter id="shadow3d" x="-20%" y="-20%" width="160%" height="160%">
+            <feDropShadow dx="6" dy="10" stdDeviation="8" flood-color="rgba(0,0,0,0.6)"/>
+          </filter>
+          <filter id="glow" x="-30%" y="-30%" width="160%" height="160%">
+            <feGaussianBlur stdDeviation="3" result="blur"/>
+            <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
+          <!-- Gradient faces briques -->
+          <linearGradient id="brickRed" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#ff1a1a"/>
+            <stop offset="100%" stop-color="#b80009"/>
+          </linearGradient>
+          <linearGradient id="brickRedSide" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stop-color="#8c0007"/>
+            <stop offset="100%" stop-color="#6b0005"/>
+          </linearGradient>
+          <linearGradient id="brickYellow" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#ffe44d"/>
+            <stop offset="100%" stop-color="#c9a800"/>
+          </linearGradient>
+          <linearGradient id="brickYellowSide" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stop-color="#9e8300"/>
+            <stop offset="100%" stop-color="#7a6600"/>
+          </linearGradient>
+          <linearGradient id="brickBlue" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#1a90e8"/>
+            <stop offset="100%" stop-color="#004f88"/>
+          </linearGradient>
+          <linearGradient id="brickBlueSide" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stop-color="#003c68"/>
+            <stop offset="100%" stop-color="#002b4a"/>
+          </linearGradient>
+          <linearGradient id="brickGreen" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#00d966"/>
+            <stop offset="100%" stop-color="#007a33"/>
+          </linearGradient>
+          <linearGradient id="brickGreenSide" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stop-color="#005c26"/>
+            <stop offset="100%" stop-color="#003d18"/>
+          </linearGradient>
+        </defs>
+
+        <!-- Groupe avec animation flottement -->
+        <g style="animation: svgFloat1 4s ease-in-out infinite;">
+          <!-- BRIQUE ROUGE GRANDE (bas gauche) -->
+          <g transform="translate(20, 180)" filter="url(#shadow3d)">
+            <!-- Face top -->
+            <polygon points="0,0 120,0 120,32 0,32" fill="url(#brickRed)"/>
+            <!-- Reflet top -->
+            <rect x="2" y="2" width="116" height="6" rx="2" fill="rgba(255,255,255,0.18)"/>
+            <!-- Face droite (3D) -->
+            <polygon points="120,0 140,14 140,46 120,32" fill="url(#brickRedSide)"/>
+            <!-- Face bottom -->
+            <polygon points="0,32 120,32 140,46 20,46" fill="rgba(0,0,0,0.25)"/>
+            <!-- Studs (2 plots) -->
+            <ellipse cx="30" cy="-10" rx="18" ry="8" fill="url(#brickRed)"/>
+            <ellipse cx="30" cy="-10" rx="18" ry="8" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="1"/>
+            <ellipse cx="90" cy="-10" rx="18" ry="8" fill="url(#brickRed)"/>
+            <ellipse cx="90" cy="-10" rx="18" ry="8" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="1"/>
+            <!-- Contour stud -->
+            <ellipse cx="30" cy="-18" rx="14" ry="6" fill="#c0000a" stroke="rgba(255,255,255,0.15)" stroke-width="0.5"/>
+            <ellipse cx="90" cy="-18" rx="14" ry="6" fill="#c0000a" stroke="rgba(255,255,255,0.15)" stroke-width="0.5"/>
+            <!-- Corps stud -->
+            <rect x="16" y="-18" width="28" height="12" fill="url(#brickRed)" rx="2"/>
+            <rect x="76" y="-18" width="28" height="12" fill="url(#brickRed)" rx="2"/>
+            <!-- Top stud -->
+            <ellipse cx="30" cy="-18" rx="14" ry="5" fill="#ff2020"/>
+            <ellipse cx="90" cy="-18" rx="14" ry="5" fill="#ff2020"/>
+          </g>
+        </g>
+
+        <g style="animation: svgFloat2 5s ease-in-out infinite;">
+          <!-- BRIQUE JAUNE (milieu) -->
+          <g transform="translate(110, 110)" filter="url(#shadow3d)">
+            <polygon points="0,0 90,0 90,28 0,28" fill="url(#brickYellow)"/>
+            <rect x="2" y="2" width="86" height="5" rx="2" fill="rgba(255,255,255,0.22)"/>
+            <polygon points="90,0 110,14 110,42 90,28" fill="url(#brickYellowSide)"/>
+            <polygon points="0,28 90,28 110,42 20,42" fill="rgba(0,0,0,0.22)"/>
+            <!-- 1 stud -->
+            <rect x="30" y="-16" width="30" height="18" fill="url(#brickYellow)" rx="2"/>
+            <ellipse cx="45" cy="-16" rx="15" ry="5" fill="#ffe233"/>
+            <ellipse cx="45" cy="-8" rx="12" ry="4" fill="rgba(255,255,255,0.1)"/>
+          </g>
+        </g>
+
+        <g style="animation: svgFloat3 6s ease-in-out infinite;">
+          <!-- BRIQUE BLEUE (haut droite) -->
+          <g transform="translate(180, 50)" filter="url(#shadow3d)">
+            <polygon points="0,0 100,0 100,30 0,30" fill="url(#brickBlue)"/>
+            <rect x="2" y="2" width="96" height="6" rx="2" fill="rgba(255,255,255,0.18)"/>
+            <polygon points="100,0 122,15 122,45 100,30" fill="url(#brickBlueSide)"/>
+            <polygon points="0,30 100,30 122,45 22,45" fill="rgba(0,0,0,0.25)"/>
+            <!-- 2 studs -->
+            <rect x="15" y="-16" width="28" height="18" fill="url(#brickBlue)" rx="2"/>
+            <ellipse cx="29" cy="-16" rx="13" ry="5" fill="#2aa0ff"/>
+            <rect x="57" y="-16" width="28" height="18" fill="url(#brickBlue)" rx="2"/>
+            <ellipse cx="71" cy="-16" rx="13" ry="5" fill="#2aa0ff"/>
+          </g>
+        </g>
+
+        <g style="animation: svgFloat1 3.5s ease-in-out infinite reverse;">
+          <!-- BRIQUE VERTE (droite bas) -->
+          <g transform="translate(200, 200)" filter="url(#shadow3d)">
+            <polygon points="0,0 80,0 80,26 0,26" fill="url(#brickGreen)"/>
+            <rect x="2" y="2" width="76" height="5" rx="2" fill="rgba(255,255,255,0.18)"/>
+            <polygon points="80,0 98,13 98,39 80,26" fill="url(#brickGreenSide)"/>
+            <polygon points="0,26 80,26 98,39 18,39" fill="rgba(0,0,0,0.22)"/>
+            <!-- 1 stud -->
+            <rect x="25" y="-14" width="30" height="16" fill="url(#brickGreen)" rx="2"/>
+            <ellipse cx="40" cy="-14" rx="13" ry="5" fill="#00ff80"/>
+          </g>
+        </g>
+
+        <!-- Mini briques décoratives -->
+        <g style="animation: svgFloat2 4.5s ease-in-out infinite;" opacity="0.7">
+          <g transform="translate(30, 60)">
+            <polygon points="0,0 48,0 48,16 0,16" fill="#ff6b00"/>
+            <rect x="1" y="1" width="46" height="4" rx="1" fill="rgba(255,255,255,0.2)"/>
+            <polygon points="48,0 60,8 60,24 48,16" fill="#c04d00"/>
+            <polygon points="0,16 48,16 60,24 12,24" fill="rgba(0,0,0,0.2)"/>
+            <rect x="12" y="-9" width="24" height="11" fill="#ff6b00" rx="1"/>
+            <ellipse cx="24" cy="-9" rx="10" ry="4" fill="#ff8a30"/>
+          </g>
+        </g>
+
+        <g style="animation: svgFloat3 5.5s ease-in-out infinite reverse;" opacity="0.65">
+          <g transform="translate(260, 140)">
+            <polygon points="0,0 56,0 56,18 0,18" fill="#9b59b6"/>
+            <rect x="1" y="1" width="54" height="5" rx="1" fill="rgba(255,255,255,0.18)"/>
+            <polygon points="56,0 70,9 70,27 56,18" fill="#6c3483"/>
+            <polygon points="0,18 56,18 70,27 14,27" fill="rgba(0,0,0,0.22)"/>
+            <rect x="10" y="-10" width="36" height="12" fill="#9b59b6" rx="1"/>
+            <ellipse cx="28" cy="-10" rx="15" ry="5" fill="#b07cc6"/>
+          </g>
+        </g>
+
+        <!-- Particules / pixels déco -->
+        <circle cx="80" cy="40" r="4" fill="var(--yellow)" opacity="0.4" style="animation:pulse 2s infinite;"/>
+        <circle cx="300" cy="80" r="3" fill="#E3000B" opacity="0.4" style="animation:pulse 2.5s infinite;"/>
+        <circle cx="160" cy="270" r="5" fill="#006DB7" opacity="0.35" style="animation:pulse 3s infinite;"/>
+        <circle cx="310" cy="260" r="3" fill="#00c851" opacity="0.4" style="animation:pulse 1.8s infinite;"/>
+        <circle cx="50" cy="250" r="4" fill="#9b59b6" opacity="0.35" style="animation:pulse 2.2s infinite;"/>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<!-- USP BAR -->
+<div class="usp-bar">
+  <div class="usp-item"><i class="fa-solid fa-box-open"></i> Préparé en 24 h</div>
+  <div class="usp-item"><i class="fa-solid fa-truck-fast"></i> Expédié en 2 jours</div>
+  <div class="usp-item"><i class="fa-solid fa-shield-halved"></i> Paiement sécurisé SSL</div>
+  <div class="usp-item"><i class="fa-solid fa-rotate-left"></i> Retours 30 jours offerts</div>
+  <div class="usp-item"><i class="fa-solid fa-headset"></i> SAV 7j/7</div>
+</div>
+
+<!-- SHIPPING BLOCK -->
+<div class="shipping-block">
+  <div class="shipping-block-inner">
+    <div class="ship-step">
+      <div class="ship-step-num">1</div>
+      <div class="ship-step-icon"><i class="fa-solid fa-cart-shopping"></i></div>
+      <h4>Commande validée</h4>
+      <p>Confirmation instantanée par e-mail dès le paiement.</p>
+    </div>
+    <div class="ship-arrow"><i class="fa-solid fa-chevron-right"></i></div>
+    <div class="ship-step">
+      <div class="ship-step-num">2</div>
+      <div class="ship-step-icon"><i class="fa-solid fa-boxes-stacking"></i></div>
+      <h4>Préparation soigneuse</h4>
+      <p>Vérifié, emballé et protégé par nos équipes en 24 h.</p>
+    </div>
+    <div class="ship-arrow"><i class="fa-solid fa-chevron-right"></i></div>
+    <div class="ship-step">
+      <div class="ship-step-num">3</div>
+      <div class="ship-step-icon"><i class="fa-solid fa-truck-fast"></i></div>
+      <h4>Expédié sous 2 jours</h4>
+      <p>Numéro de suivi envoyé dès l'expédition.</p>
+    </div>
+  </div>
+  <div style="text-align:center;margin-top:1.5rem">
+    <div class="ship-promise">
+      <i class="fa-solid fa-circle-check" style="font-size:1.5rem;color:var(--yellow)"></i>
+      <div class="ship-promise-text">
+        <h4>Préparé et expédié en 2 jours</h4>
+        <p>Garanti sur toutes les commandes avant 14 h</p>
+      </div>
+      <div class="ship-badge">2 J</div>
+    </div>
+  </div>
+</div>
+
+<!-- CATÉGORIES avec briques 3D CSS -->
+<section class="categories-section">
+  <div class="section-header">
+    <h2 class="section-title">THÈMES <span>POPULAIRES</span></h2>
+    <span class="see-all">Tous les thèmes ›</span>
+  </div>
+  <div class="cat-grid" id="catGrid"></div>
+</section>
+
+<!-- SEARCH BANNER -->
+<div class="search-banner" id="searchBanner">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <span id="searchBannerText"></span>
+  <button class="search-banner-clear" onclick="clearSearch()"><i class="fa-solid fa-xmark"></i> Effacer</button>
+</div>
+
+<!-- FILTERS -->
+<div class="filters-bar" id="filters-anchor">
+  <div class="filters-inner">
+    <span class="filter-label"><i class="fa-solid fa-filter"></i> Filtres</span>
+    <button class="filter-chip active" id="chipAll" onclick="filterByTheme('Tous');setChipActive(this)">Tous</button>
+    <button class="filter-chip" onclick="filterByTheme('Star Wars');setChipActive(this)"><i class="fa-solid fa-star"></i> Star Wars</button>
+    <button class="filter-chip" onclick="filterByTheme('Technic');setChipActive(this)"><i class="fa-solid fa-gear"></i> Technic</button>
+    <button class="filter-chip" onclick="filterByTheme('Harry Potter');setChipActive(this)"><i class="fa-solid fa-hat-wizard"></i> Harry Potter</button>
+    <button class="filter-chip" onclick="filterByTheme('Marvel');setChipActive(this)"><i class="fa-solid fa-mask"></i> Marvel</button>
+    <button class="filter-chip" onclick="filterByTheme('Speed Champions');setChipActive(this)"><i class="fa-solid fa-flag-checkered"></i> Speed</button>
+    <button class="filter-chip" onclick="filterByTheme('Creator Expert');setChipActive(this)"><i class="fa-solid fa-landmark"></i> Creator</button>
+    <button class="filter-chip" onclick="filterByTheme('City');setChipActive(this)"><i class="fa-solid fa-city"></i> City</button>
+    <button class="filter-chip" onclick="filterByTheme('Disney');setChipActive(this)"><i class="fa-solid fa-wand-magic-sparkles"></i> Disney</button>
+    <button class="filter-chip" onclick="filterByTheme('Ninjago');setChipActive(this)"><i class="fa-solid fa-dragon"></i> Ninjago</button>
+    <div class="sort-divider"></div>
+    <select class="sort-select" onchange="sortProducts(this.value)">
+      <option value="default">Trier par</option>
+      <option value="price-asc">Prix croissant</option>
+      <option value="price-desc">Prix décroissant</option>
+      <option value="name-asc">Nom A → Z</option>
+      <option value="rating">Mieux notés</option>
+    </select>
+    <div class="results-info" id="resultsCount">
+      <i class="fa-solid fa-cubes" style="color:var(--yellow)"></i>
+      <span id="resultsText">— produits</span>
+    </div>
+  </div>
+</div>
+
+<!-- PRODUCTS -->
+<div class="products-section">
+  <div class="products-grid" id="productsGrid"></div>
+</div>
+
+<!-- PROMO BANNER FIFA -->
+<div class="promo-banner">
+  <div>
+    <div class="promo-banner-text">
+      <h2>FIFA WORLD CUP 2026<br>× LEGO® ÉDITIONS</h2>
+      <p>Messi, Ronaldo, Mbappé, Vini Jr. — en minifigures officielles pour la première fois !</p>
+    </div>
+  </div>
+  <!-- Briques 3D CSS déco -->
+  <div class="promo-bricks">
+    <div class="brick-3d" style="--bw:40px;--bh:18px;--bc:#E3000B;"></div>
+    <div class="brick-3d" style="--bw:30px;--bh:18px;--bc:#FFD700;margin-bottom:8px;"></div>
+    <div class="brick-3d" style="--bw:40px;--bh:18px;--bc:#006DB7;margin-bottom:16px;"></div>
+    <div class="brick-3d" style="--bw:30px;--bh:18px;--bc:#00A550;"></div>
+  </div>
+  <button class="promo-btn">Découvrir la collection →</button>
+</div>
+
+<!-- NEWSLETTER -->
+<div class="newsletter">
+  <div class="newsletter-inner">
+    <h3>Restez dans la <span>boucle</span></h3>
+    <p>Nouveautés, offres exclusives et avant-premières dans votre boîte mail.</p>
+    <div class="newsletter-form">
+      <input type="email" id="newsletterEmail" placeholder="votre@email.com">
+      <button onclick="subscribeNewsletter()"><i class="fa-solid fa-paper-plane"></i> S'inscrire</button>
+    </div>
+  </div>
+</div>
+
+</div><!-- /page-home -->
+
+<!-- ═══ PAGE EXPÉDITION ═══ -->
+<div class="page" id="page-shipping">
+  <div class="static-hero">
+    <div class="static-hero-inner">
+      <h2><i class="fa-solid fa-box-open"></i> Expédition</h2>
+      <p>Toutes vos commandes sont préparées et expédiées en 2 jours ouvrés, sans exception.</p>
+    </div>
+  </div>
+  <div class="static-content">
+    <div class="info-card" style="background:linear-gradient(135deg,#002d5a,var(--blue));border:none">
+      <div style="display:flex;align-items:center;gap:1.5rem;flex-wrap:wrap">
+        <div style="width:68px;height:68px;background:rgba(255,215,0,0.1);border:2px solid rgba(255,215,0,0.3);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.7rem;flex-shrink:0">
+          <i class="fa-solid fa-truck-fast" style="color:var(--yellow)"></i>
+        </div>
+        <div style="flex:1">
+          <div style="font-size:1.3rem;font-weight:900;color:#fff;margin-bottom:0.3rem">Préparé et expédié en 2 jours</div>
+          <div style="font-size:0.85rem;color:rgba(255,255,255,0.65);line-height:1.65">Dès validation de votre paiement, notre équipe prépare votre commande sous 24 h et l'expédie sous 48 h ouvrés.</div>
+        </div>
+        <div style="background:var(--yellow);color:var(--dark);font-family:'Bebas Neue',sans-serif;font-size:2.5rem;border-radius:60px;padding:0.4rem 1.4rem;letter-spacing:-2px;flex-shrink:0">2 J</div>
+      </div>
+    </div>
+    <div class="info-card">
+      <div class="info-card-header"><div class="info-card-icon"><i class="fa-solid fa-list-check"></i></div><h3>Déroulement de votre commande</h3></div>
+      <table class="data-table">
+        <thead><tr><th>Étape</th><th>Délai</th><th>Détail</th></tr></thead>
+        <tbody>
+          <tr><td><i class="fa-solid fa-circle-check" style="color:var(--success);margin-right:0.5rem"></i><strong>Confirmation</strong></td><td>Immédiat</td><td>E-mail de confirmation envoyé dès le paiement</td></tr>
+          <tr><td><i class="fa-solid fa-boxes-stacking" style="color:var(--yellow);margin-right:0.5rem"></i><strong>Préparation</strong></td><td>Sous 24 h</td><td>Vérification, emballage soigné et protection de la boîte</td></tr>
+          <tr><td><i class="fa-solid fa-truck-fast" style="color:var(--blue);margin-right:0.5rem"></i><strong>Expédition</strong></td><td>Sous 48 h</td><td>Remise au transporteur avec numéro de suivi</td></tr>
+          <tr><td><i class="fa-solid fa-envelope-open-text" style="color:var(--yellow);margin-right:0.5rem"></i><strong>E-mail suivi</strong></td><td>Dès l'expédition</td><td>Lien de suivi en temps réel</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="info-card">
+      <div class="info-card-header"><div class="info-card-icon"><i class="fa-solid fa-circle-info"></i></div><h3>Informations complémentaires</h3></div>
+      <ul>
+        <li>Commandes passées <strong>avant 14 h</strong> : préparées le jour même</li>
+        <li>Après 14 h ou week-end : traitement le prochain jour ouvré</li>
+        <li>Emballages renforcés pour protéger les boîtes LEGO® pendant le transport</li>
+        <li>Sets volumineux : emballage double épaisseur</li>
+        <li>En cas de retard exceptionnel, notre équipe vous contacte directement</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ PAGE RETOURS ═══ -->
+<div class="page" id="page-returns">
+  <div class="static-hero">
+    <div class="static-hero-inner">
+      <h2><i class="fa-solid fa-arrow-rotate-left"></i> Retours & Remboursements</h2>
+      <p>Pas satisfait ? Retournez votre commande facilement sous 30 jours.</p>
+    </div>
+  </div>
+  <div class="static-content">
+    <div class="info-card">
+      <div class="info-card-header"><div class="info-card-icon"><i class="fa-solid fa-check-circle"></i></div><h3>Conditions de retour</h3></div>
+      <ul>
+        <li>Retours acceptés sous <strong>30 jours</strong> après réception</li>
+        <li>Produit non ouvert, dans son emballage d'origine</li>
+        <li>Remboursement sous <strong>5 à 7 jours ouvrés</strong></li>
+        <li>Frais de retour offerts si le produit est défectueux</li>
+        <li>Échange possible sans frais supplémentaires</li>
+      </ul>
+    </div>
+    <div class="info-card">
+      <div class="info-card-header"><div class="info-card-icon" style="background:rgba(0,200,81,0.1);color:var(--success)"><i class="fa-solid fa-snowflake"></i></div><h3>Extension — Fêtes de fin d'année</h3></div>
+      <p>Tout achat en <strong>novembre ou décembre</strong> bénéficie d'une période étendue jusqu'au <strong>31 janvier</strong>.</p>
+    </div>
+    <div class="info-card">
+      <div class="info-card-header"><div class="info-card-icon"><i class="fa-solid fa-credit-card"></i></div><h3>Modalités de remboursement</h3></div>
+      <table class="data-table">
+        <thead><tr><th>Mode</th><th>Délai</th><th>Avantage</th></tr></thead>
+        <tbody>
+          <tr><td>Moyen de paiement original</td><td>5 à 7 jours ouvrés</td><td>—</td></tr>
+          <tr><td>Bon d'achat BrickStore</td><td>Immédiat</td><td><span class="tag-free">+ 5 %</span></td></tr>
+          <tr><td>Échange produit</td><td>Selon disponibilité</td><td>Sans frais</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ PAGE FAVORIS ═══ -->
+<div class="page" id="page-wishlist">
+  <div class="static-hero">
+    <div class="static-hero-inner">
+      <h2><i class="fa-solid fa-heart" style="color:var(--red)"></i> Mes favoris</h2>
+      <p>Vos sets LEGO® sauvegardés pour plus tard.</p>
+    </div>
+  </div>
+  <div class="static-content" id="wishlistContent"></div>
+</div>
+
+<!-- ═══ PAGE COMPTE ═══ -->
+<div class="page" id="page-account">
+  <div class="static-hero">
+    <div class="static-hero-inner">
+      <h2><i class="fa-solid fa-circle-user"></i> Mon compte</h2>
+      <p>Gérez vos informations et vos commandes.</p>
+    </div>
+  </div>
+  <div class="static-content">
+    <div class="info-card">
+      <div class="info-card-header"><div class="info-card-icon"><i class="fa-solid fa-right-to-bracket"></i></div><h3>Connexion / Inscription</h3></div>
+      <p style="margin-bottom:1.2rem">Créez un compte pour suivre vos commandes et profiter d'offres exclusives.</p>
+      <div style="display:flex;gap:0.8rem;flex-wrap:wrap">
+        <button style="background:var(--red);color:white;border:none;padding:0.75rem 1.5rem;border-radius:50px;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;display:flex;align-items:center;gap:0.4rem;font-size:0.9rem" onclick="showToast('Fonctionnalité bientôt disponible','info','fa-solid fa-clock')">
+          <i class="fa-solid fa-right-to-bracket"></i> Se connecter
+        </button>
+        <button style="background:rgba(255,255,255,0.06);color:rgba(255,255,255,0.7);border:1.5px solid rgba(255,255,255,0.15);padding:0.75rem 1.5rem;border-radius:50px;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;display:flex;align-items:center;gap:0.4rem;font-size:0.9rem" onclick="showToast('Fonctionnalité bientôt disponible','info','fa-solid fa-clock')">
+          <i class="fa-solid fa-user-plus"></i> Créer un compte
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ PAGE PRODUIT DÉTAIL ═══ -->
+<div class="page" id="page-product">
+  <div class="breadcrumb" id="pdBreadcrumb">
+    <span onclick="goHome()"><i class="fa-solid fa-house"></i> Accueil</span>
+    <i class="fa-solid fa-chevron-right"></i>
+    <span id="pdBcTheme" onclick="pdBackToTheme()">Thème</span>
+    <i class="fa-solid fa-chevron-right"></i>
+    <span class="bc-current" id="pdBcName">Produit</span>
+  </div>
+  <div class="product-detail">
+    <div class="pd-gallery">
+      <div class="pd-main-img" id="pdMainImg" onclick="openLightbox()">
+        <div class="pd-badge-overlay" id="pdBadgeOverlay"></div>
+        <img id="pdImgMain" src="" alt="">
+        <div class="pd-zoom-hint"><i class="fa-solid fa-magnifying-glass-plus"></i> Zoom</div>
+      </div>
+      <div class="pd-thumbnails" id="pdThumbnails"></div>
+    </div>
+    <div class="pd-info">
+      <div class="pd-theme-badge" id="pdThemeBadge"><i class="fa-solid fa-tag"></i> Thème</div>
+      <h1 class="pd-title" id="pdTitle">Nom</h1>
+      <div class="pd-meta-row">
+        <div class="pd-setnum"><i class="fa-solid fa-hashtag"></i> <span id="pdSetNum"></span></div>
+        <div class="pd-stars" id="pdStars"></div>
+        <span class="pd-stars-count" id="pdStarsCount"></span>
+        <span class="pd-reviews-link" onclick="switchTab('reviews')">Voir les avis</span>
+      </div>
+      <div class="pd-price-block">
+        <div>
+          <div class="pd-price-main"><span>€</span><span id="pdPriceInt">0</span><span id="pdPriceDec">,00</span></div>
+        </div>
+        <div class="pd-price-sub">
+          <div class="pd-price-vat">Prix TTC, livraison en sus</div>
+          <div class="pd-price-ship"><i class="fa-solid fa-truck-fast"></i> Expédié en 2 jours</div>
+        </div>
+      </div>
+      <div class="pd-stock" id="pdStock"><div class="pd-stock-dot"></div><span>En stock — expédition sous 24 h</span></div>
+      <div class="pd-buy-block">
+        <div class="pd-qty-row">
+          <span class="pd-qty-label">Quantité</span>
+          <div class="pd-qty-ctrl">
+            <button class="pd-qty-btn" onclick="pdQtyChange(-1)"><i class="fa-solid fa-minus"></i></button>
+            <div class="pd-qty-val" id="pdQtyVal">1</div>
+            <button class="pd-qty-btn" onclick="pdQtyChange(1)"><i class="fa-solid fa-plus"></i></button>
+          </div>
+        </div>
+        <div class="pd-actions-row">
+          <button class="pd-btn-add" id="pdBtnAdd" onclick="pdAddToCart()"><i class="fa-solid fa-cart-plus"></i> Ajouter au panier</button>
+          <button class="pd-btn-wish" id="pdBtnWish" onclick="pdToggleWish()"><i class="fa-regular fa-heart" id="pdWishIcon"></i></button>
+        </div>
+      </div>
+      <div class="pd-guarantees">
+        <div class="pd-guarantee"><i class="fa-solid fa-truck-fast"></i><span>Expédition<br>2 jours</span></div>
+        <div class="pd-guarantee"><i class="fa-solid fa-shield-halved"></i><span>Paiement<br>sécurisé</span></div>
+        <div class="pd-guarantee"><i class="fa-solid fa-rotate-left"></i><span>Retours<br>30 jours</span></div>
+        <div class="pd-guarantee"><i class="fa-solid fa-award"></i><span>LEGO®<br>officiel</span></div>
+        <div class="pd-guarantee"><i class="fa-solid fa-headset"></i><span>SAV<br>7j/7</span></div>
+        <div class="pd-guarantee"><i class="fa-solid fa-box-open"></i><span>Emballage<br>renforcé</span></div>
+      </div>
+      <div class="pd-tabs">
+        <div class="pd-tab-nav">
+          <button class="pd-tab-btn active" onclick="switchTab('desc')">Description</button>
+          <button class="pd-tab-btn" onclick="switchTab('specs')">Caractéristiques</button>
+          <button class="pd-tab-btn" onclick="switchTab('reviews')">Avis clients</button>
+        </div>
+        <div class="pd-tab-content active" id="tab-desc"><div class="pd-description" id="pdDescription"></div></div>
+        <div class="pd-tab-content" id="tab-specs"><div class="pd-specs" id="pdSpecs"></div></div>
+        <div class="pd-tab-content" id="tab-reviews"><div class="pd-reviews" id="pdReviews"></div></div>
+      </div>
+    </div>
+  </div>
+  <div class="pd-related">
+    <div class="pd-related-title">Vous aimerez aussi — <span id="pdRelatedTheme"></span></div>
+    <div class="pd-related-grid" id="pdRelatedGrid"></div>
+  </div>
+</div>
+<div class="pd-lightbox" id="pdLightbox" onclick="closeLightbox()">
+  <button class="pd-lightbox-close"><i class="fa-solid fa-xmark"></i></button>
+  <img id="pdLightboxImg" src="" alt="">
+</div>
+<!-- CART -->
+<div class="cart-overlay" id="cartOverlay" onclick="closeCart()"></div>
+<div class="cart-panel" id="cartPanel">
+  <div class="cart-header">
+    <div class="cart-header-left">
+      <i class="fa-solid fa-bag-shopping"></i>
+      <h3>Mon panier</h3>
+      <span class="cart-header-count" id="cartHeaderCount">0</span>
+    </div>
+    <button class="cart-close" onclick="closeCart()"><i class="fa-solid fa-xmark"></i></button>
+  </div>
+  <div class="cart-body" id="cartBody">
+    <div class="cart-empty">
+      <i class="fa-solid fa-bag-shopping"></i>
+      <h4>Votre panier est vide</h4>
+      <p>Ajoutez des sets LEGO® pour commencer</p>
+    </div>
+  </div>
+  <div class="cart-footer" id="cartFooter">
+    <div class="free-ship-bar">
+      <div class="free-ship-label">
+        <span>Livraison gratuite</span>
+        <span id="shipRemain">0 € restants</span>
+      </div>
+      <div class="free-ship-track"><div class="free-ship-fill" id="shipFill" style="width:0%"></div></div>
+    </div>
+    <div class="cart-subtotal">
+      <span class="cart-subtotal-label">Sous-total</span>
+      <span class="cart-subtotal-value" id="cartTotal">0,00 €</span>
+    </div>
+    <div class="cart-shipping-note" id="shippingNote" style="display:none">
+      <i class="fa-solid fa-circle-check"></i> Livraison standard offerte !
+    </div>
+    <button class="btn-checkout" onclick="checkout()"><i class="fa-solid fa-lock"></i> Passer la commande</button>
+    <div class="payment-icons">
+      <span class="payment-icon"><i class="fa-brands fa-cc-visa"></i> Visa</span>
+      <span class="payment-icon"><i class="fa-brands fa-cc-mastercard"></i> Mastercard</span>
+      <span class="payment-icon"><i class="fa-brands fa-cc-paypal"></i> PayPal</span>
+      <span class="payment-icon"><i class="fa-solid fa-shield-halved"></i> SSL</span>
+    </div>
+  </div>
+</div>
+
+<div class="toast-wrap" id="toastWrap"></div>
+
+<button class="scroll-top" id="scrollTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+  <i class="fa-solid fa-arrow-up"></i>
+</button>
+
+<footer>
+  <div class="footer-logo">Brick<span>Store</span> 2026</div>
+  <p><strong>© 2026 BrickStore</strong> — Boutique LEGO® indépendante. LEGO® est une marque déposée du Groupe LEGO.</p>
+  <div class="footer-links">
+    <a href="#">Mentions légales</a>
+    <a href="#">CGV</a>
+    <a href="#">Confidentialité</a>
+    <a href="#" onclick="showPage('shipping');return false">Expédition</a>
+    <a href="#" onclick="showPage('returns');return false">Retours</a>
+    <a href="#">Contact</a>
+  </div>
+</footer>
+
+<style>
+/* Animations SVG briques */
+@keyframes svgFloat1 { 0%,100%{transform:translateY(0px)} 50%{transform:translateY(-12px)} }
+@keyframes svgFloat2 { 0%,100%{transform:translateY(0px)} 50%{transform:translateY(-8px)} }
+@keyframes svgFloat3 { 0%,100%{transform:translateY(0px)} 50%{transform:translateY(-15px)} }
+@keyframes pulse     { 0%,100%{opacity:0.3;transform:scale(1)} 50%{opacity:0.7;transform:scale(1.4)} }
+</style>
+
+<script>
+// ══ CATALOGUE ══
+const products = [
+  { id:1,  name:"Le marcheur AT-ST",                              theme:"Star Wars",       price:159.99, badge:"Nouveau", stars:5, setNum:"75417", img:"https://images.brickset.com/sets/images/75417-1.jpg" },
+  { id:2,  name:"Le MTT des séparatistes",                        theme:"Star Wars",       price:124.99, badge:"Nouveau", stars:5, setNum:"75435", img:"https://images.brickset.com/sets/images/75435-1.jpg" },
+  { id:3,  name:"Droïde astromécano C1-10P Chopper",              theme:"Star Wars",       price:79.00,  badge:"Nouveau", stars:4, setNum:"75416", img:"https://images.brickset.com/sets/images/75416-1.jpg" },
+  { id:4,  name:"L'intercepteur TIE",                             theme:"Star Wars",       price:199.00, badge:"Nouveau", stars:5, setNum:"75382", img:"https://images.brickset.com/sets/images/75382-1.jpg" },
+  { id:5,  name:"Pack Clone Troopers 501ème légion",              theme:"Star Wars",       price:19.99,  badge:"",        stars:4, setNum:"75345", img:"https://images.brickset.com/sets/images/75345-1.jpg" },
+  { id:6,  name:"Le vaisseau des Gardiens",                       theme:"Star Wars",       price:169.99, badge:"",        stars:5, setNum:"76193", img:"https://images.brickset.com/sets/images/76193-1.jpg" },
+  { id:7,  name:"Le marcheur AT-TE",                              theme:"Star Wars",       price:109.99, badge:"",        stars:5, setNum:"75337", img:"https://images.brickset.com/sets/images/75337-1.jpg" },
+  { id:8,  name:"Imperial Star Destroyer",                        theme:"Star Wars",       price:649.99, badge:"Premium", stars:5, setNum:"75252", img:"https://images.brickset.com/sets/images/75252-1.jpg" },
+  { id:9,  name:"Millennium Falcon",                              theme:"Star Wars",       price:819.99, badge:"Premium", stars:5, setNum:"75192", img:"https://images.brickset.com/sets/images/75192-1.jpg" },
+  { id:10, name:"Le Onyx Cinder",                                 theme:"Star Wars",       price:119.99, badge:"Nouveau", stars:5, setNum:"75374", img:"https://images.brickset.com/sets/images/75374-1.jpg" },
+  { id:11, name:"Embarquement à bord du Tantive IV",              theme:"Star Wars",       price:49.99,  badge:"Nouveau", stars:4, setNum:"75387", img:"https://images.brickset.com/sets/images/75387-1.jpg" },
+  { id:12, name:"Le Mandalorien et l'Enfant",                     theme:"Star Wars",       price:19.99,  badge:"",        stars:5, setNum:"75317", img:"https://images.brickset.com/sets/images/75317-1.jpg" },
+  { id:13, name:"La canonnière de Coruscant",                     theme:"Star Wars",       price:119.00, badge:"",        stars:5, setNum:"75354", img:"https://images.brickset.com/sets/images/75354-1.jpg" },
+  { id:14, name:"Razor Crest",                                    theme:"Star Wars",       price:549.99, badge:"Premium", stars:5, setNum:"75331", img:"https://images.brickset.com/sets/images/75331-1.jpg" },
+  { id:20, name:"Chargeuse sur pneus Volvo L120",                 theme:"Technic",         price:79.00,  badge:"Nouveau", stars:4, setNum:"42209", img:"https://images.brickset.com/sets/images/42209-1.jpg" },
+  { id:21, name:"Hélicoptère de secours Airbus H175",             theme:"Technic",         price:159.99, badge:"",        stars:5, setNum:"42145", img:"https://images.brickset.com/sets/images/42145-1.jpg" },
+  { id:22, name:"McLaren Formula 1",                              theme:"Technic",         price:129.99, badge:"",        stars:5, setNum:"42141", img:"https://images.brickset.com/sets/images/42141-1.jpg" },
+  { id:23, name:"Lamborghini Huracán Tecnica",                    theme:"Technic",         price:41.99,  badge:"",        stars:5, setNum:"42161", img:"https://images.brickset.com/sets/images/42161-1.jpg" },
+  { id:24, name:"F1 Ferrari SF-24 Technic",                       theme:"Technic",         price:199.99, badge:"Nouveau", stars:5, setNum:"42207", img:"https://images.brickset.com/sets/images/42207-1.jpg" },
+  { id:25, name:"Ferrari FXX K",                                  theme:"Technic",         price:49.99,  badge:"Nouveau", stars:5, setNum:"42212", img:"https://images.brickset.com/sets/images/42212-1.jpg" },
+  { id:26, name:"Lamborghini Sián FKP 37",                        theme:"Technic",         price:399.99, badge:"",        stars:5, setNum:"42115", img:"https://images.brickset.com/sets/images/42115-1.jpg" },
+  { id:27, name:"Mercedes-AMG F1 W14",                            theme:"Technic",         price:199.99, badge:"",        stars:5, setNum:"42171", img:"https://images.brickset.com/sets/images/42171-1.jpg" },
+  { id:28, name:"Porsche 911 RSR",                                theme:"Technic",         price:199.99, badge:"",        stars:5, setNum:"42096", img:"https://images.brickset.com/sets/images/42096-1.jpg" },
+  { id:29, name:"McLaren P1",                                     theme:"Technic",         price:399.99, badge:"Premium", stars:5, setNum:"42172", img:"https://images.brickset.com/sets/images/42172-1.jpg" },
+  { id:30, name:"Ferrari 488 GTE AF Corse",                       theme:"Technic",         price:169.00, badge:"",        stars:5, setNum:"42125", img:"https://images.brickset.com/sets/images/42125-1.jpg" },
+  { id:31, name:"Ford Mustang Shelby GT500",                      theme:"Technic",         price:49.99,  badge:"",        stars:4, setNum:"42138", img:"https://images.brickset.com/sets/images/42138-1.jpg" },
+  { id:32, name:"Pelleteuse Liebherr R 9800",                     theme:"Technic",         price:419.99, badge:"",        stars:5, setNum:"42100", img:"https://images.brickset.com/sets/images/42100-1.jpg" },
+  { id:33, name:"Camion de remorquage lourd",                     theme:"Technic",         price:149.99, badge:"",        stars:5, setNum:"42128", img:"https://images.brickset.com/sets/images/42128-1.jpg" },
+  { id:34, name:"Jeep Wrangler",                                  theme:"Technic",         price:39.99,  badge:"",        stars:5, setNum:"42122", img:"https://images.brickset.com/sets/images/42122-1.jpg" },
+  { id:35, name:"Ducati Panigale V4 R",                           theme:"Technic",         price:49.99,  badge:"",        stars:5, setNum:"42107", img:"https://images.brickset.com/sets/images/42107-1.jpg" },
+  { id:36, name:"Yamaha MT-10 SP",                                theme:"Technic",         price:250.99, badge:"",        stars:5, setNum:"42159", img:"https://images.brickset.com/sets/images/42159-1.jpg" },
+  { id:37, name:"F1 Oracle Red Bull Racing RB20",                 theme:"Technic",         price:221.99, badge:"Nouveau", stars:5, setNum:"42206", img:"https://images.brickset.com/sets/images/42206-1.jpg" },
+  { id:38, name:"SUV Ford Bronco",                                theme:"Technic",         price:45.99,  badge:"Nouveau", stars:4, setNum:"42213", img:"https://images.brickset.com/sets/images/42213-1.jpg" },
+  { id:39, name:"Hypercar Koenigsegg Jesko Absolut",              theme:"Technic",         price:42.99,  badge:"Nouveau", stars:4, setNum:"42173", img:"https://images.brickset.com/sets/images/42173-1.jpg" },
+  { id:50, name:"Shelby Cobra 427 S/C",                           theme:"Speed Champions", price:119.99, badge:"Nouveau", stars:5, setNum:"10357", img:"https://images.brickset.com/sets/images/10357-1.jpg" },
+  { id:51, name:"Nissan Skyline GT-R R34",                        theme:"Speed Champions", price:19.99,  badge:"",        stars:5, setNum:"76917", img:"https://images.brickset.com/sets/images/76917-1.jpg" },
+  { id:52, name:"Ferrari F8 Tributo",                             theme:"Speed Champions", price:19.99,  badge:"",        stars:4, setNum:"76895", img:"https://images.brickset.com/sets/images/76895-1.jpg" },
+  { id:53, name:"Aston Martin Safety Car et AMR23",               theme:"Speed Champions", price:19.99,  badge:"",        stars:4, setNum:"76925", img:"https://images.brickset.com/sets/images/76925-1.jpg" },
+  { id:54, name:"Mercedes-AMG G 63 et SL 63",                     theme:"Speed Champions", price:39.99,  badge:"",        stars:4, setNum:"76924", img:"https://images.brickset.com/sets/images/76924-1.jpg" },
+  { id:55, name:"Voiture F1 Ferrari SF-24",                       theme:"Speed Champions", price:21.99,  badge:"Nouveau", stars:4, setNum:"77242", img:"https://images.brickset.com/sets/images/77242-1.jpg" },
+  { id:56, name:"Voiture F1 Red Bull Racing RB20",                theme:"Speed Champions", price:24.99,  badge:"Nouveau", stars:4, setNum:"77243", img:"https://images.brickset.com/sets/images/77243-1.jpg" },
+  { id:60, name:"Poudlard : les cours de vol",                    theme:"Harry Potter",    price:64.00,  badge:"Nouveau", stars:5, setNum:"76447", img:"https://images.brickset.com/sets/images/76447-1.jpg" },
+  { id:61, name:"Tournoi des Trois Sorciers : le lac noir",       theme:"Harry Potter",    price:44.99,  badge:"",        stars:4, setNum:"76420", img:"https://images.brickset.com/sets/images/76420-1.jpg" },
+  { id:62, name:"Aventure en Magicobus",                          theme:"Harry Potter",    price:31.99,  badge:"Nouveau", stars:4, setNum:"76446", img:"https://images.brickset.com/sets/images/76446-1.jpg" },
+  { id:63, name:"Tournoi des Trois Sorciers : l'arrivée",         theme:"Harry Potter",    price:119.99, badge:"Nouveau", stars:5, setNum:"76440", img:"https://images.brickset.com/sets/images/76440-1.jpg" },
+  { id:64, name:"Le Chemin de Traverse",                          theme:"Harry Potter",    price:449.99, badge:"Premium", stars:5, setNum:"75978", img:"https://images.brickset.com/sets/images/75978-1.jpg" },
+  { id:65, name:"Boutiques magiques du Chemin de Traverse",       theme:"Harry Potter",    price:199.99, badge:"Nouveau", stars:5, setNum:"76444", img:"https://images.brickset.com/sets/images/76444-1.jpg" },
+  { id:70, name:"Buste d'Iron Spider-Man",                        theme:"Marvel",          price:49.00,  badge:"Nouveau", stars:5, setNum:"76326", img:"https://images.brickset.com/sets/images/76326-1.jpg" },
+  { id:71, name:"Le gant de l'infini",                            theme:"Marvel",          price:79.99,  badge:"",        stars:5, setNum:"76191", img:"https://images.brickset.com/sets/images/76191-1.jpg" },
+  { id:72, name:"Iron Man et l'Iron Legion",                      theme:"Marvel",          price:49.99,  badge:"Nouveau", stars:4, setNum:"76288", img:"https://images.brickset.com/sets/images/76288-1.jpg" },
+  { id:73, name:"Black Panther",                                  theme:"Marvel",          price:349.99, badge:"Premium", stars:5, setNum:"76215", img:"https://images.brickset.com/sets/images/76215-1.jpg" },
+  { id:74, name:"Thor vs Surtur",                                 theme:"Marvel",          price:29.99,  badge:"Nouveau", stars:4, setNum:"76289", img:"https://images.brickset.com/sets/images/76289-1.jpg" },
+  { id:80, name:"Batman Forever Batmobile",                       theme:"DC",              price:79.99,  badge:"Nouveau", stars:5, setNum:"76304", img:"https://images.brickset.com/sets/images/76304-1.jpg" },
+  { id:81, name:"Batman et moto Bat-Pod",                         theme:"DC",              price:74.00,  badge:"Nouveau", stars:5, setNum:"76273", img:"https://images.brickset.com/sets/images/76273-1.jpg" },
+  { id:82, name:"Batman La série animée – Gotham City",           theme:"DC",              price:279.99, badge:"Premium", stars:5, setNum:"76271", img:"https://images.brickset.com/sets/images/76271-1.jpg" },
+  { id:90, name:"La Joconde",                                     theme:"Art",             price:119.99, badge:"",        stars:5, setNum:"31213", img:"https://images.brickset.com/sets/images/31213-1.jpg" },
+  { id:91, name:"Starry Night – Van Gogh",                        theme:"Art",             price:169.99, badge:"",        stars:5, setNum:"21333", img:"https://images.brickset.com/sets/images/21333-1.jpg" },
+  { id:92, name:"La Grande Vague de Kanagawa",                    theme:"Art",             price:169.99, badge:"",        stars:5, setNum:"31208", img:"https://images.brickset.com/sets/images/31208-1.jpg" },
+  { id:100, name:"La tour Eiffel",                                theme:"Icons",           price:629.99, badge:"Premium", stars:5, setNum:"10307", img:"https://images.brickset.com/sets/images/10307-1.jpg" },
+  { id:101, name:"Le Titanic",                                    theme:"Icons",           price:629.99, badge:"Premium", stars:5, setNum:"10294", img:"https://images.brickset.com/sets/images/10294-1.jpg" },
+  { id:102, name:"Le Colisée",                                    theme:"Icons",           price:549.99, badge:"Premium", stars:5, setNum:"10276", img:"https://images.brickset.com/sets/images/10276-1.jpg" },
+  { id:103, name:"Le château de Poudlard",                        theme:"Icons",           price:469.99, badge:"Premium", stars:5, setNum:"71043", img:"https://images.brickset.com/sets/images/71043-1.jpg" },
+  { id:104, name:"Boutique de fleurs",                            theme:"Creator Expert",  price:229.99, badge:"",        stars:5, setNum:"10280", img:"https://images.brickset.com/sets/images/10280-1.jpg" },
+  { id:105, name:"Librairie",                                     theme:"Creator Expert",  price:179.99, badge:"",        stars:5, setNum:"10270", img:"https://images.brickset.com/sets/images/10270-1.jpg" },
+  { id:106, name:"Appartements",                                  theme:"Creator Expert",  price:229.99, badge:"",        stars:5, setNum:"10278", img:"https://images.brickset.com/sets/images/10278-1.jpg" },
+  { id:107, name:"Grand Magasin",                                 theme:"Creator Expert",  price:229.99, badge:"",        stars:5, setNum:"10211", img:"https://images.brickset.com/sets/images/10211-1.jpg" },
+  { id:108, name:"Hôtel de Ville",                                theme:"Creator Expert",  price:349.99, badge:"Premium", stars:5, setNum:"10224", img:"https://images.brickset.com/sets/images/10224-1.jpg" },
+  { id:110, name:"La station de police",                          theme:"City",            price:199.99, badge:"Nouveau", stars:5, setNum:"60316", img:"https://images.brickset.com/sets/images/60316-1.jpg" },
+  { id:111, name:"L'hôpital de la ville",                         theme:"City",            price:249.99, badge:"Nouveau", stars:5, setNum:"60330", img:"https://images.brickset.com/sets/images/60330-1.jpg" },
+  { id:112, name:"La caserne des pompiers",                       theme:"City",            price:199.99, badge:"",        stars:5, setNum:"60320", img:"https://images.brickset.com/sets/images/60320-1.jpg" },
+  { id:113, name:"Le centre commercial",                          theme:"City",            price:149.99, badge:"",        stars:4, setNum:"60321", img:"https://images.brickset.com/sets/images/60321-1.jpg" },
+  { id:120, name:"Le château de Cendrillon",                      theme:"Disney",          price:349.99, badge:"",        stars:5, setNum:"43222", img:"https://images.brickset.com/sets/images/43222-1.jpg" },
+  { id:121, name:"Le château de la Belle au Bois Dormant",        theme:"Disney",          price:349.99, badge:"Nouveau", stars:5, setNum:"43211", img:"https://images.brickset.com/sets/images/43211-1.jpg" },
+  { id:122, name:"Peter Pan et Wendy",                            theme:"Disney",          price:79.99,  badge:"",        stars:4, setNum:"43232", img:"https://images.brickset.com/sets/images/43232-1.jpg" },
+  { id:130, name:"Le dragon de Lloyd",                            theme:"Ninjago",         price:49.99,  badge:"",        stars:4, setNum:"71786", img:"https://images.brickset.com/sets/images/71786-1.jpg" },
+  { id:131, name:"Le temple du dragon Imperium",                  theme:"Ninjago",         price:129.99, badge:"Nouveau", stars:5, setNum:"71795", img:"https://images.brickset.com/sets/images/71795-1.jpg" },
+  { id:132, name:"La cité de Ninjago",                            theme:"Ninjago",         price:349.99, badge:"Premium", stars:5, setNum:"71741", img:"https://images.brickset.com/sets/images/71741-1.jpg" },
+];
+
+// ══ CATÉGORIES avec couleurs et briques ══
+const categories = [
+  { theme:'Star Wars',       icon:'fa-star',                color:'#FFD700', brickColor:'#FFD700', count:14 },
+  { theme:'Technic',         icon:'fa-gear',                color:'#E3000B', brickColor:'#E3000B', count:20 },
+  { theme:'Harry Potter',    icon:'fa-hat-wizard',          color:'#9b59b6', brickColor:'#9b59b6', count:6  },
+  { theme:'Marvel',          icon:'fa-mask',                color:'#E3000B', brickColor:'#E3000B', count:5  },
+  { theme:'Speed Champions', icon:'fa-flag-checkered',      color:'#006DB7', brickColor:'#006DB7', count:7  },
+  { theme:'Creator Expert',  icon:'fa-landmark',            color:'#00A550', brickColor:'#00A550', count:5  },
+  { theme:'City',            icon:'fa-city',                color:'#006DB7', brickColor:'#006DB7', count:4  },
+  { theme:'Disney',          icon:'fa-wand-magic-sparkles', color:'#e91e63', brickColor:'#e91e63', count:3  },
+  { theme:'Ninjago',         icon:'fa-dragon',              color:'#ff6b00', brickColor:'#ff6b00', count:3  },
+  { theme:'Icons',           icon:'fa-building',            color:'#FFD700', brickColor:'#FFD700', count:4  },
+  { theme:'Art',             icon:'fa-palette',             color:'#9b59b6', brickColor:'#9b59b6', count:3  },
+  { theme:'DC',              icon:'fa-bolt',                color:'#006DB7', brickColor:'#006DB7', count:3  },
+];
+
+// Génère une mini brique 3D SVG inline dans les catégories
+function miniSVGBrick(color) {
+  const dark = shadeColor(color, -35);
+  const darkSide = shadeColor(color, -55);
+  return `<svg width="44" height="38" viewBox="0 0 44 38" xmlns="http://www.w3.org/2000/svg">
+    <rect x="0" y="12" width="36" height="18" rx="2" fill="${color}"/>
+    <rect x="0" y="12" width="36" height="5" rx="1" fill="rgba(255,255,255,0.18)"/>
+    <polygon points="36,12 44,18 44,36 36,30" fill="${darkSide}"/>
+    <polygon points="0,30 36,30 44,36 8,36" fill="rgba(0,0,0,0.25)"/>
+    <rect x="7" y="3" width="12" height="11" rx="2" fill="${color}" stroke="rgba(255,255,255,0.15)" stroke-width="0.5"/>
+    <ellipse cx="13" cy="3" rx="6" ry="3" fill="${shadeColor(color, 12)}"/>
+    <rect x="23" y="3" width="12" height="11" rx="2" fill="${color}" stroke="rgba(255,255,255,0.15)" stroke-width="0.5"/>
+    <ellipse cx="29" cy="3" rx="6" ry="3" fill="${shadeColor(color, 12)}"/>
+  </svg>`;
+}
+
+function shadeColor(hex, pct) {
+  const n = parseInt(hex.slice(1), 16);
+  const r = Math.min(255, Math.max(0, (n >> 16) + pct*2));
+  const g = Math.min(255, Math.max(0, ((n >> 8) & 0xff) + pct*2));
+  const b = Math.min(255, Math.max(0, (n & 0xff) + pct*2));
+  return `rgb(${r},${g},${b})`;
+}
+
+// ══ RENDU CATÉGORIES ══
+function renderCategories() {
+  const grid = document.getElementById('catGrid');
+  grid.innerHTML = categories.map(c => `
+    <div class="cat-card" style="--cat-color:${c.color}" onclick="filterByTheme('${c.theme}')">
+      <div class="cat-brick-wrap">${miniSVGBrick(c.brickColor)}</div>
+      <div class="cat-name">${c.theme}</div>
+      <div class="cat-count">${c.count} sets</div>
+    </div>`).join('');
+}
+
+// ══ ÉTAT ══
+let cart=[],wishlist=[],currentFilter='Tous',currentSort='default',currentSearch='';
+
+// ══ PRODUITS FILTRÉS ══
+function getFiltered() {
+  let list = [...products];
+  if (currentFilter !== 'Tous') list = list.filter(p => p.theme === currentFilter);
+  if (currentSearch.trim()) {
+    const q = currentSearch.toLowerCase();
+    list = list.filter(p =>
+      p.name.toLowerCase().includes(q) ||
+      p.theme.toLowerCase().includes(q) ||
+      p.setNum.includes(q)
+    );
+  }
+  switch(currentSort) {
+    case 'price-asc':  list.sort((a,b) => a.price - b.price); break;
+    case 'price-desc': list.sort((a,b) => b.price - a.price); break;
+    case 'name-asc':   list.sort((a,b) => a.name.localeCompare(b.name)); break;
+    case 'rating':     list.sort((a,b) => b.stars - a.stars); break;
+  }
+  return list;
+}
+
+function highlight(text) {
+  if (!currentSearch.trim()) return text;
+  const q = currentSearch.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
+  return text.replace(new RegExp(`(${q})`,'gi'),'<mark>$1</mark>');
+}
+
+function renderStars(n) {
+  let s='';
+  for(let i=0;i<5;i++) s+=`<i class="fa-${i<n?'solid':'regular'} fa-star"></i>`;
+  return s;
+}
+
+// Brique 3D SVG sur la card (fallback si image échoue)
+function cardFallbackBrick(theme) {
+  const cat = categories.find(c=>c.theme===theme);
+  const col = cat ? cat.brickColor : '#E3000B';
+  return miniSVGBrick(col);
+}
+
+function renderProducts() {
+  const grid = document.getElementById('productsGrid');
+  const list = getFiltered();
+  document.getElementById('resultsText').textContent = `${list.length} produit${list.length>1?'s':''}`;
+
+  if(!list.length) {
+    grid.innerHTML = `<div class="no-results">
+      <div class="no-results-icon"><i class="fa-solid fa-magnifying-glass"></i></div>
+      <h3>Aucun résultat</h3>
+      <p>Essayez un autre terme ou explorez tous nos sets.</p>
+      <button onclick="clearSearch()"><i class="fa-solid fa-rotate-left"></i> Voir tous les produits</button>
+    </div>`;
+    return;
+  }
+
+  grid.innerHTML = list.map(p => {
+    const inWish = wishlist.includes(p.id);
+    const badgeCls = p.badge==='Premium'?'premium':'new';
+    return `
+    <div class="product-card" onclick="openProductPage(${p.id})" style="cursor:pointer">
+      ${p.badge?`<div class="card-badges"><span class="card-badge ${badgeCls}">${p.badge}</span></div>`:''}
+      <button class="card-wish ${inWish?'active':''}" onclick="event.stopPropagation();toggleWish(${p.id})">
+        <i class="fa-${inWish?'solid':'regular'} fa-heart"></i>
+      </button>
+      <div class="card-img">
+        <img src="${p.img}" alt="${p.name}"
+          onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"
+          loading="lazy">
+        <div class="card-brick-fallback">${cardFallbackBrick(p.theme)}</div>
+      </div>
+      <div class="card-body">
+        <div class="card-theme"><i class="fa-solid fa-tag"></i> ${highlight(p.theme)}</div>
+        <div class="card-name">${highlight(p.name)}</div>
+        <div class="card-stars">${renderStars(p.stars)}<span>(${p.stars}.0)</span></div>
+        <div class="card-set"><i class="fa-solid fa-hashtag"></i> ${p.setNum}</div>
+        <div class="card-footer">
+          <div class="card-price">${p.price.toFixed(2).replace('.',',')} €</div>
+          <button class="card-add" id="btn-${p.id}" onclick="event.stopPropagation();addToCart(${p.id})">
+            <i class="fa-solid fa-cart-plus"></i> Ajouter
+          </button>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// ══ FILTRES / TRI ══
+function filterByTheme(theme) {
+  currentFilter = theme;
+  showPage('home');
+  renderProducts();
+  setTimeout(()=>document.getElementById('filters-anchor').scrollIntoView({behavior:'smooth',block:'start'}),50);
+  document.querySelectorAll('.filter-chip').forEach(c=>{
+    const txt=c.textContent.trim();
+    const match=(theme==='Tous'&&txt==='Tous')||txt.toLowerCase().includes(theme.toLowerCase().substring(0,4));
+    c.classList.toggle('active',match);
+  });
+  if(theme==='Tous'){const ca=document.getElementById('chipAll');if(ca)ca.classList.add('active');}
+}
+function setChipActive(el){
+  document.querySelectorAll('.filter-chip').forEach(c=>c.classList.remove('active'));
+  el.classList.add('active');
+}
+function sortProducts(val){currentSort=val;renderProducts();}
+
+// ══ RECHERCHE ══
+function handleSearch(val){
+  currentSearch=val;
+  const banner=document.getElementById('searchBanner');
+  const clearBtn=document.getElementById('searchClearBtn');
+  if(val.trim()){
+    banner.classList.add('show');
+    document.getElementById('searchBannerText').textContent=`Résultats pour « ${val} »`;
+    clearBtn.classList.add('visible');
+    showPage('home');
+    filterByTheme('Tous');
+    renderProducts();
+  } else {
+    banner.classList.remove('show');
+    clearBtn.classList.remove('visible');
+    renderProducts();
+  }
+}
+function clearSearch(){
+  currentSearch='';
+  document.getElementById('searchInput').value='';
+  document.getElementById('searchBanner').classList.remove('show');
+  document.getElementById('searchClearBtn').classList.remove('visible');
+  renderProducts();
+}
+
+// ══ PANIER ══
+function addToCart(id){
+  const p=products.find(x=>x.id===id);
+  const btn=document.getElementById(`btn-${id}`);
+  const ex=cart.find(x=>x.id===id);
+  if(ex) ex.qty++;
+  else cart.push({...p,qty:1});
+  updateCartUI();
+  showToast(`${p.name} ajouté au panier`,'success','fa-solid fa-circle-check');
+  if(btn){
+    btn.classList.add('adding');
+    btn.innerHTML='<i class="fa-solid fa-check"></i> Ajouté';
+    setTimeout(()=>{btn.classList.remove('adding');btn.innerHTML='<i class="fa-solid fa-cart-plus"></i> Ajouter';},1200);
+  }
+}
+function removeFromCart(id){cart=cart.filter(x=>x.id!==id);updateCartUI();}
+function changeQty(id,delta){
+  const item=cart.find(x=>x.id===id);
+  if(!item)return;
+  item.qty+=delta;
+  if(item.qty<=0) removeFromCart(id);
+  else updateCartUI();
+}
+function updateCartUI(){
+  const total=cart.reduce((s,x)=>s+x.price*x.qty,0);
+  const count=cart.reduce((s,x)=>s+x.qty,0);
+  const FREE=75;
+  const badge=document.getElementById('cartBadge');
+  badge.textContent=count;
+  badge.classList.toggle('show',count>0);
+  document.getElementById('cartHeaderCount').textContent=count;
+  const body=document.getElementById('cartBody');
+  if(!cart.length){
+    body.innerHTML=`<div class="cart-empty"><i class="fa-solid fa-bag-shopping"></i><h4>Votre panier est vide</h4><p>Ajoutez des sets LEGO® pour commencer</p></div>`;
+    document.getElementById('cartFooter').style.display='none';
+    return;
+  }
+  document.getElementById('cartFooter').style.display='block';
+  body.innerHTML=cart.map(item=>`
+    <div class="cart-item">
+      <img class="cart-item-img" src="${item.img}" alt="${item.name}"
+        onerror="this.style.display='none'" loading="lazy">
+      <div class="cart-item-info">
+        <div class="cart-item-theme">${item.theme}</div>
+        <div class="cart-item-name">${item.name}</div>
+        <div class="cart-item-price">${(item.price*item.qty).toFixed(2).replace('.',',')} €</div>
+        <div class="cart-item-controls">
+          <button class="qty-btn" onclick="changeQty(${item.id},-1)"><i class="fa-solid fa-minus"></i></button>
+          <span class="qty-value">${item.qty}</span>
+          <button class="qty-btn" onclick="changeQty(${item.id},1)"><i class="fa-solid fa-plus"></i></button>
+        </div>
+      </div>
+      <button class="cart-remove" onclick="removeFromCart(${item.id})"><i class="fa-solid fa-trash"></i></button>
+    </div>`).join('');
+  document.getElementById('cartTotal').textContent=total.toFixed(2).replace('.',',')+'  €';
+  const pct=Math.min((total/FREE)*100,100);
+  document.getElementById('shipFill').style.width=pct+'%';
+  const remain=FREE-total;
+  const note=document.getElementById('shippingNote');
+  if(remain>0){document.getElementById('shipRemain').textContent=remain.toFixed(2).replace('.',',')+' € restants';note.style.display='none';}
+  else{document.getElementById('shipRemain').textContent='Livraison offerte !';note.style.display='flex';}
+}
+function openCart(){document.getElementById('cartPanel').classList.add('open');document.getElementById('cartOverlay').classList.add('open');}
+function closeCart(){document.getElementById('cartPanel').classList.remove('open');document.getElementById('cartOverlay').classList.remove('open');}
+function checkout(){
+  if(!cart.length){showToast('Votre panier est vide','warning','fa-solid fa-triangle-exclamation');return;}
+  showToast('Redirection vers le paiement…','info','fa-solid fa-lock');
+  closeCart();
+}
+
+// ══ WISHLIST ══
+function toggleWish(id){
+  const p=products.find(x=>x.id===id);
+  if(wishlist.includes(id)){wishlist=wishlist.filter(x=>x!==id);showToast('Retiré des favoris','info','fa-regular fa-heart');}
+  else{wishlist.push(id);showToast(`${p.name} ajouté aux favoris`,'success','fa-solid fa-heart');}
+  const wb=document.getElementById('wishBadge');
+  wb.textContent=wishlist.length;
+  wb.classList.toggle('show',wishlist.length>0);
+  renderProducts();
+  renderWishlist();
+}
+function renderWishlist(){
+  const el=document.getElementById('wishlistContent');
+  if(!wishlist.length){
+    el.innerHTML=`<div class="wishlist-empty"><i class="fa-regular fa-heart"></i><h4>Aucun favori pour l'instant</h4><p>Cliquez sur le cœur d'un produit pour l'ajouter ici.</p></div>`;
+    return;
+  }
+  const items=products.filter(p=>wishlist.includes(p.id));
+  el.innerHTML=`<div class="products-grid">`+items.map(p=>`
+    <div class="product-card">
+      <button class="card-wish active" onclick="toggleWish(${p.id})"><i class="fa-solid fa-heart"></i></button>
+      <div class="card-img">
+        <img src="${p.img}" alt="${p.name}" onerror="this.style.display='none'" loading="lazy">
+        <div class="card-brick-fallback">${cardFallbackBrick(p.theme)}</div>
+      </div>
+      <div class="card-body">
+        <div class="card-theme"><i class="fa-solid fa-tag"></i> ${p.theme}</div>
+        <div class="card-name">${p.name}</div>
+        <div class="card-stars">${renderStars(p.stars)}</div>
+        <div class="card-footer">
+          <div class="card-price">${p.price.toFixed(2).replace('.',',')} €</div>
+          <button class="card-add" onclick="addToCart(${p.id})"><i class="fa-solid fa-cart-plus"></i> Ajouter</button>
+        </div>
+      </div>
+    </div>`).join('')+`</div>`;
+}
+
+// ══ NAVIGATION ══
+function showPage(name){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById(`page-${name}`).classList.add('active');
+  document.querySelectorAll('.nav-link').forEach(l=>l.classList.remove('active'));
+  document.getElementById('navHome').classList.toggle('active',name==='home');
+  if(name==='wishlist') renderWishlist();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function goHome(){
+  clearSearch();
+  currentFilter='Tous'; currentSort='default';
+  document.querySelectorAll('.filter-chip').forEach(c=>c.classList.remove('active'));
+  const ca=document.getElementById('chipAll');if(ca)ca.classList.add('active');
+  showPage('home'); renderProducts();
+}
+
+// ══ NEWSLETTER ══
+function subscribeNewsletter(){
+  const input=document.getElementById('newsletterEmail');
+  const email=input.value.trim();
+  if(!email||!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){
+    showToast('Adresse e-mail invalide','error','fa-solid fa-circle-exclamation');
+    return;
+  }
+  showToast(`Inscription confirmée pour ${email} !`,'success','fa-solid fa-circle-check');
+  input.value='';
+}
+
+// ══ TOASTS ══
+function showToast(msg,type='success',icon='fa-solid fa-circle-check'){
+  const wrap=document.getElementById('toastWrap');
+  const t=document.createElement('div');
+  t.className=`toast ${type}`;
+  t.innerHTML=`<i class="${icon}"></i><span>${msg}</span>`;
+  wrap.appendChild(t);
+  setTimeout(()=>t.remove(),3200);
+}
+
+// ══ SCROLL TOP ══
+window.addEventListener('scroll',()=>{
+  document.getElementById('scrollTopBtn').classList.toggle('visible',window.scrollY>400);
+});
+
+// ══════════════════════════════════════
+//  PAGE PRODUIT DÉTAIL
+// ══════════════════════════════════════
+let currentProductId = null;
+let pdQty = 1;
+
+// Descriptions générées par thème
+const themeDescriptions = {
+  'Star Wars':       ['Plongez dans la galaxie loin, très loin... avec ce set LEGO® Star Wars™ exceptionnel. Chaque brique a été conçue pour reproduire fidèlement les vaisseaux et personnages emblématiques de la saga.','Idéal pour les collectionneurs et les fans de la saga, ce set offre une expérience de construction enrichissante et un modèle d\'exposition impressionnant.'],
+  'Technic':         ['Ce set LEGO® Technic™ repousse les limites de l\'ingénierie LEGO. Avec ses engrenages, pistons et mécanismes authentiques, il reproduit fidèlement les fonctions du véhicule réel.','Un défi de construction passionnant pour les amateurs de mécanique et d\'ingénierie. Parfait pour développer la logique et la créativité technique.'],
+  'Harry Potter':    ['Retournez à Poudlard avec ce set LEGO® Harry Potter™ magique ! Reconstituez les décors emblématiques du monde des sorciers avec une précision remarquable.','Chaque détail a été soigneusement reproduit pour immerger les fans dans l\'univers fantastique de la saga. Inclut des minifigures de vos personnages préférés.'],
+  'Marvel':          ['Assemblez vos super-héros Marvel préférés avec ce set LEGO® Marvel exceptionnel. Des détails saisissants et des minifigures exclusives pour les fans du MCU.','Ce set permet de recréer les scènes d\'action les plus épiques des comics et films Marvel. Un must pour tout collectionneur.'],
+  'Speed Champions': ['Ce set LEGO® Speed Champions capture à la perfection le style et les performances de la voiture réelle. Chaque courbe, chaque détail aérodynamique est fidèlement reproduit.','Avec ses proportions minifigure uniques, ce bolide est parfait pour les passionnés d\'automobile et les fans de course automobile.'],
+  'Creator Expert':  ['Ce chef-d\'œuvre LEGO® Creator Expert est conçu pour les adultes passionnés de construction. Chaque détail architectural a été méticuleusement reproduit pour un résultat époustouflant.','Un projet de construction ambitieux qui constitue également une pièce d\'exposition de prestige. La modularité permet de personnaliser l\'intérieur à l\'infini.'],
+  'City':            ['Construisez et animez votre ville LEGO® City avec ce set dynamique et plein de vie. Des minifigures, véhicules et bâtiments réalistes pour des heures de jeu créatif.','Compatible avec tous les autres sets LEGO® City pour construire la ville de vos rêves. Parfait pour développer l\'imagination des enfants.'],
+  'Disney':          ['Entrez dans un monde de magie avec ce set LEGO® Disney™. Chaque détail enchanteur a été pensé pour transporter fans et enfants dans l\'univers féerique de Disney.','Un set de collection aussi beau à construire qu\'à exposer. Reproduit fidèlement l\'architecture et les couleurs iconiques des histoires Disney.'],
+  'Ninjago':         ['Rejoignez les ninjas dans leurs aventures épiques avec ce set LEGO® Ninjago® ! Des mécanismes d\'action et des minifigures exclusives pour des batailles palpitantes.','Idéal pour les fans de la série animée, ce set reproduit fidèlement les décors et personnages de Ninjago avec un niveau de détail exceptionnel.'],
+  'Icons':           ['Ce set LEGO® Icons est une véritable œuvre d\'art en briques. Destiné aux adultes, il offre une expérience de construction méditative et un résultat d\'exposition spectaculaire.','Chaque pièce a été pensée pour refléter l\'architecture réelle avec une précision fascinante. Un trophée pour tout collectionneur LEGO.'],
+  'Art':             ['Explorez votre créativité avec ce set LEGO® Art. Créez une œuvre d\'art murale unique en assemblant des milliers de petites briques colorées.','Une expérience relaxante et méditative qui se transforme en une superbe pièce de décoration. Peut être réarrangé pour créer différentes variantes.'],
+  'DC':              ['Rejoignez les héros de DC Comics avec ce set LEGO® exclusif. Véhicules iconiques, minifigures détaillées et accessoires pour recréer vos scènes préférées.','Un set incontournable pour les fans de Batman, Superman et tous les super-héros DC. Idéal pour jouer et pour exposer.'],
+};
+
+const themeFeatures = {
+  'Star Wars':       ['Reproduction fidèle de la saga Star Wars™','Minifigures exclusives avec accessoires détaillés','Compatible avec tous les sets LEGO® Star Wars™','Idéal pour exposition et jeu','Notice d\'assemblage illustrée étape par étape'],
+  'Technic':         ['Mécanismes fonctionnels authentiques (engrenages, pistons)','Conception ingénieur haute fidélité','Compatible avec les moteurs Power Functions','Notice d\'assemblage avancée avec 3D interactif','Pièces Technic exclusives et renforcées'],
+  'Creator Expert':  ['Architecture modulaire — intérieur personnalisable','Fenêtres et portes fonctionnelles','Compatible avec tous les sets modulaires','Rues et trottoirs inclus','Notice d\'assemblage illustrée en couleur'],
+  'Harry Potter':    ['Décors iconiques de la saga Harry Potter™','Minifigures exclusives avec baguettes et accessoires','Éléments interactifs et cachettes secrètes','Compatible avec les autres sets Poudlard','Stickers et décorations officiels'],
+  'default':         ['Qualité LEGO® certifiée et garantie','Pièces colorées durables et résistantes','Compatible avec toutes les briques LEGO® standard','Notice d\'assemblage illustrée étape par étape','Idéal comme cadeau pour petits et grands'],
+};
+
+// Avis fictifs par thème
+const reviewsDB = {
+  'Star Wars': [
+    { name:'Lucas M.', score:5, text:'Absolument incroyable ! Les détails sont époustouflants. La construction m\'a pris 3 heures mais chaque minute valait le coup. Les minifigures sont parfaites.', color:'#006DB7' },
+    { name:'Sophie D.', score:5, text:'Cadeau parfait pour mon fils passionné de Star Wars. Il a adoré construire avec moi. La qualité LEGO est irréprochable comme toujours.', color:'#E3000B' },
+    { name:'Thomas R.', score:4, text:'Très beau set, fidèle à l\'original. Quelques petites pièces compliquées à positionner mais le résultat est superbe. Je recommande !', color:'#00A550' },
+  ],
+  'Technic': [
+    { name:'Marc B.', score:5, text:'Un chef-d\'œuvre d\'ingénierie en LEGO ! Les mécanismes fonctionnent vraiment, c\'est bluffant. Construction complexe mais très satisfaisante.', color:'#E3000B' },
+    { name:'Julie V.', score:5, text:'Mon mari collectionne les Technic et celui-là est son préféré. Les détails sont incroyables et la solidité de la construction est remarquable.', color:'#FFD700' },
+    { name:'Pierre L.', score:4, text:'Superbe modèle, très fidèle à la réalité. La construction est longue mais la notice est très bien faite. Résultat spectaculaire sur mon bureau.', color:'#9b59b6' },
+  ],
+  'default': [
+    { name:'Marie C.', score:5, text:'Excellent set ! La qualité LEGO est toujours au rendez-vous. La construction est agréable et le résultat est vraiment impressionnant.', color:'#006DB7' },
+    { name:'Antoine P.', score:5, text:'Parfait ! Livraison rapide par BrickStore, emballage soigné, set en parfait état. Je recommande vivement cette boutique et ce produit.', color:'#E3000B' },
+    { name:'Clara B.', score:4, text:'Très beau set, ma fille adore ! Quelques pièces un peu petites pour les enfants en bas âge mais globalement une super expérience de construction.', color:'#00A550' },
+  ],
+};
+
+// Specs dynamiques par produit
+function buildSpecs(p) {
+  const pieces = Math.floor(p.price * 6.8 + Math.random()*200);
+  const age = p.badge === 'Premium' ? '18+' : p.price > 100 ? '12+' : p.price > 40 ? '8+' : '6+';
+  const dims = p.price > 300 ? '58 × 42 × 18 cm' : p.price > 100 ? '38 × 28 × 12 cm' : '22 × 16 × 8 cm';
+  return [
+    { label:'Référence', value: p.setNum },
+    { label:'Thème',     value: p.theme },
+    { label:'Âge',       value: age },
+    { label:'Pièces',    value: pieces.toLocaleString('fr-FR') },
+    { label:'Dimensions', value: dims },
+    { label:'Poids',     value: (p.price * 0.012).toFixed(2).replace('.',',') + ' kg' },
+    { label:'Minifigures', value: p.price > 200 ? Math.floor(p.price/60) : p.price > 50 ? '3' : '1' },
+    { label:'Année',     value: '2026' },
+    { label:'Garantie',  value: '2 ans LEGO®' },
+    { label:'Matière',   value: 'ABS recyclable' },
+  ];
+}
+
+// Génère des images variantes (angles différents) via brickset
+function buildThumbs(p) {
+  // On utilise l'image principale + des variantes d'angles simulées
+  return [
+    p.img,
+    p.img.replace('-1.jpg','-2.jpg'),
+    p.img.replace('-1.jpg','-3.jpg'),
+    p.img.replace('-1.jpg','-4.jpg'),
+  ];
+}
+
+function openProductPage(id) {
+  const p = products.find(x => x.id === id);
+  if (!p) return;
+  currentProductId = id;
+  pdQty = 1;
+
+  // Breadcrumb
+  document.getElementById('pdBcTheme').textContent = p.theme;
+  document.getElementById('pdBcName').textContent = p.name;
+
+  // Badge
+  const badgeOverlay = document.getElementById('pdBadgeOverlay');
+  badgeOverlay.innerHTML = p.badge
+    ? `<span class="card-badge ${p.badge==='Premium'?'premium':'new'}">${p.badge}</span>` : '';
+
+  // Image principale
+  const mainImg = document.getElementById('pdImgMain');
+  mainImg.src = p.img;
+  mainImg.alt = p.name;
+  mainImg.onerror = function(){ this.style.display='none'; };
+  document.getElementById('pdLightboxImg').src = p.img;
+
+  // Thumbnails
+  const thumbs = buildThumbs(p);
+  const thumbsEl = document.getElementById('pdThumbnails');
+  thumbsEl.innerHTML = thumbs.map((src, i) => `
+    <div class="pd-thumb ${i===0?'active':''}" onclick="pdSwitchThumb(this,'${src}')">
+      <img src="${src}" alt="${p.name} vue ${i+1}" onerror="this.parentElement.style.display='none'">
+    </div>`).join('');
+
+  // Infos
+  document.getElementById('pdThemeBadge').innerHTML = `<i class="fa-solid fa-tag"></i> ${p.theme}`;
+  document.getElementById('pdTitle').textContent = p.name;
+  document.getElementById('pdSetNum').textContent = p.setNum;
+
+  // Étoiles
+  let starsHtml = '';
+  for(let i=0;i<5;i++) starsHtml += `<i class="fa-${i<p.stars?'solid':'regular'} fa-star"></i>`;
+  document.getElementById('pdStars').innerHTML = starsHtml;
+  const reviewCount = Math.floor(p.price * 0.8 + 12);
+  document.getElementById('pdStarsCount').textContent = `${p.stars}.0 (${reviewCount} avis)`;
+
+  // Prix
+  const priceStr = p.price.toFixed(2).replace('.',',');
+  const [intPart, decPart] = priceStr.split(',');
+  document.getElementById('pdPriceInt').textContent = intPart;
+  document.getElementById('pdPriceDec').textContent = ',' + decPart;
+
+  // Stock simulé
+  const pdStock = document.getElementById('pdStock');
+  if (p.badge === 'Premium') {
+    pdStock.className = 'pd-stock pd-stock-low';
+    pdStock.innerHTML = `<div class="pd-stock-dot"></div><span>Stock limité — plus que ${Math.floor(Math.random()*5)+2} exemplaires</span>`;
+  } else {
+    pdStock.className = 'pd-stock';
+    pdStock.innerHTML = `<div class="pd-stock-dot"></div><span>En stock — expédition sous 24 h</span>`;
+  }
+
+  // Quantité reset
+  document.getElementById('pdQtyVal').textContent = '1';
+
+  // Wishlist état
+  updatePdWishBtn();
+
+  // Description
+  const descs = themeDescriptions[p.theme] || themeDescriptions['Star Wars'];
+  const feats = themeFeatures[p.theme] || themeFeatures['default'];
+  document.getElementById('pdDescription').innerHTML = `
+    <p>${descs[0]}</p>
+    <p>${descs[1]}</p>
+    <ul class="pd-features">
+      ${feats.map(f=>`<li><i class="fa-solid fa-check"></i>${f}</li>`).join('')}
+    </ul>`;
+
+  // Specs
+  const specs = buildSpecs(p);
+  document.getElementById('pdSpecs').innerHTML = specs.map(s=>`
+    <div class="pd-spec-row">
+      <span class="pd-spec-label">${s.label}</span>
+      <span class="pd-spec-value">${s.value}</span>
+    </div>`).join('');
+
+  // Avis
+  renderPdReviews(p);
+
+  // Produits similaires
+  const related = products.filter(x => x.theme === p.theme && x.id !== p.id).slice(0,4);
+  document.getElementById('pdRelatedTheme').textContent = p.theme;
+  document.getElementById('pdRelatedGrid').innerHTML = related.map(r => `
+    <div class="product-card" style="cursor:pointer" onclick="openProductPage(${r.id})">
+      <div class="card-img">
+        <img src="${r.img}" alt="${r.name}" onerror="this.style.display='none'" loading="lazy">
+        <div class="card-brick-fallback">${cardFallbackBrick(r.theme)}</div>
+      </div>
+      <div class="card-body">
+        <div class="card-name" style="font-size:0.82rem">${r.name}</div>
+        <div class="card-footer">
+          <div class="card-price">${r.price.toFixed(2).replace('.',',')} €</div>
+          <button class="card-add" onclick="event.stopPropagation();addToCart(${r.id})">
+            <i class="fa-solid fa-cart-plus"></i>
+          </button>
+        </div>
+      </div>
+    </div>`).join('');
+
+  // Reset tabs
+  switchTab('desc');
+
+  showPage('product');
+}
+
+function renderPdReviews(p) {
+  const reviewData = reviewsDB[p.theme] || reviewsDB['default'];
+  const avgScore = p.stars;
+  const reviewCount = Math.floor(p.price * 0.8 + 12);
+  const bars = [
+    { stars:5, pct: avgScore>=5 ? 78 : 60 },
+    { stars:4, pct: avgScore>=4 ? 15 : 25 },
+    { stars:3, pct: 5 },
+    { stars:2, pct: 1 },
+    { stars:1, pct: 1 },
+  ];
+  let starsMain = '';
+  for(let i=0;i<5;i++) starsMain += `<i class="fa-${i<avgScore?'solid':'regular'} fa-star"></i>`;
+
+  document.getElementById('pdReviews').innerHTML = `
+    <div class="pd-review-summary">
+      <div>
+        <div class="pd-review-big">${avgScore}.0</div>
+        <div class="pd-review-stars">${starsMain}</div>
+        <div class="pd-review-count">${reviewCount} avis vérifiés</div>
+      </div>
+      <div class="pd-review-bars">
+        ${bars.map(b=>`
+        <div class="pd-review-bar-row">
+          <span>${b.stars}★</span>
+          <div class="pd-review-bar-track"><div class="pd-review-bar-fill" style="width:${b.pct}%"></div></div>
+          <span>${b.pct}%</span>
+        </div>`).join('')}
+      </div>
+    </div>
+    ${reviewData.map((r,i)=>`
+    <div class="pd-review-card">
+      <div class="pd-review-header">
+        <div class="pd-reviewer-avatar" style="background:${r.color}22;color:${r.color}">
+          ${r.name.substring(0,2).toUpperCase()}
+        </div>
+        <div>
+          <div class="pd-reviewer-name">${r.name}</div>
+          <div class="pd-reviewer-date">${['15 mars 2026','2 février 2026','18 janvier 2026'][i]}</div>
+        </div>
+        <div class="pd-verified"><i class="fa-solid fa-circle-check"></i> Achat vérifié</div>
+      </div>
+      <div class="pd-review-stars-small">${'<i class="fa-solid fa-star"></i>'.repeat(r.score)}</div>
+      <div class="pd-review-text">${r.text}</div>
+    </div>`).join('')}`;
+}
+
+function pdSwitchThumb(el, src) {
+  document.querySelectorAll('.pd-thumb').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  const main = document.getElementById('pdImgMain');
+  main.style.opacity = '0';
+  setTimeout(() => {
+    main.src = src;
+    document.getElementById('pdLightboxImg').src = src;
+    main.style.opacity = '1';
+    main.style.transition = 'opacity 0.25s';
+  }, 120);
+}
+
+function pdQtyChange(delta) {
+  pdQty = Math.max(1, Math.min(10, pdQty + delta));
+  document.getElementById('pdQtyVal').textContent = pdQty;
+}
+
+function pdAddToCart() {
+  if (!currentProductId) return;
+  const p = products.find(x => x.id === currentProductId);
+  const ex = cart.find(x => x.id === currentProductId);
+  if (ex) ex.qty += pdQty;
+  else cart.push({...p, qty: pdQty});
+  updateCartUI();
+  const btn = document.getElementById('pdBtnAdd');
+  btn.classList.add('adding');
+  btn.innerHTML = `<i class="fa-solid fa-check"></i> Ajouté au panier (${pdQty})`;
+  showToast(`${p.name} × ${pdQty} ajouté au panier`, 'success', 'fa-solid fa-circle-check');
+  setTimeout(() => {
+    btn.classList.remove('adding');
+    btn.innerHTML = '<i class="fa-solid fa-cart-plus"></i> Ajouter au panier';
+  }, 1800);
+}
+
+function pdToggleWish() {
+  if (!currentProductId) return;
+  toggleWish(currentProductId);
+  updatePdWishBtn();
+}
+
+function updatePdWishBtn() {
+  if (!currentProductId) return;
+  const inWish = wishlist.includes(currentProductId);
+  const btn = document.getElementById('pdBtnWish');
+  const icon = document.getElementById('pdWishIcon');
+  if (!btn || !icon) return;
+  if (inWish) {
+    btn.classList.add('active');
+    icon.className = 'fa-solid fa-heart';
+  } else {
+    btn.classList.remove('active');
+    icon.className = 'fa-regular fa-heart';
+  }
+}
+
+function pdBackToTheme() {
+  const p = products.find(x => x.id === currentProductId);
+  if (p) filterByTheme(p.theme);
+}
+
+function switchTab(tab) {
+  document.querySelectorAll('.pd-tab-btn').forEach((b,i) => {
+    const tabs = ['desc','specs','reviews'];
+    b.classList.toggle('active', tabs[i] === tab);
+  });
+  document.querySelectorAll('.pd-tab-content').forEach(c => c.classList.remove('active'));
+  const el = document.getElementById(`tab-${tab}`);
+  if (el) el.classList.add('active');
+}
+
+function openLightbox() {
+  document.getElementById('pdLightbox').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeLightbox() {
+  document.getElementById('pdLightbox').classList.remove('open');
+  document.body.style.overflow = '';
+}
+document.addEventListener('keydown', e => { if(e.key==='Escape') closeLightbox(); });
+
+// ══ INIT ══
+renderCategories();
+renderProducts();
+</script>
+</body>
+</html>
