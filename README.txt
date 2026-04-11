@@ -1,5 +1,5 @@
 ===========================================
-  BRICKSTORE 2026 — Votre site LEGO® Premium
+  BRICKSTORE  — Votre site LEGO® Premium
 ===========================================
 
 FICHIERS INCLUS :
